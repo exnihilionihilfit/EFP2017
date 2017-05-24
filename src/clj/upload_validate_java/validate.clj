@@ -8,6 +8,7 @@
             [clj-time.core :as t]))
 
 
+
 (def file-name "FileServer")
 (def file-type "java")
 (def importOrder "import")
@@ -19,10 +20,6 @@
 
 ;; uploaded file dir
 (def resource-path "/tmp/")
-
-
-
-
 
 (use 'clojure.java.io)
 (use 'clojure.string)

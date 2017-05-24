@@ -8,7 +8,6 @@
             [environ.core :refer [env]]
             [ring.util.anti-forgery :refer [anti-forgery-field]]))
 
-
 (parser/add-tag! :csrf-field (fn [_ _] (anti-forgery-field)))
 (def template-path "templates/")
 
