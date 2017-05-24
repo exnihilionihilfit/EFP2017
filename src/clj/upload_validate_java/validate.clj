@@ -1,5 +1,5 @@
-(ns luminus-upload-files.validate
-  (:require [luminus-upload-files.layout :as layout]
+(ns upload_validate_java.validate
+  (:require [upload_validate_java.layout :as layout]
             [noir.io :as io]
             [noir.response :as response]
             [noir.util.middleware :refer [app-handler]]
@@ -15,9 +15,10 @@
 (def packageName "var.mom.jms.file")
 
 (def text '())
+(def validationMessage '())
+
 ;; uploaded file dir
 (def resource-path "/tmp/")
-(def validationMessage '())
 
 (use 'clojure.java.io)
 (use 'clojure.string)

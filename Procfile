@@ -1,1 +1,1 @@
-web: lein with-profile production trampoline ring server
+web: java $JVM_OPTS -cp target/uberjar/upload_validate_java.jar clojure.main -m upload-validate-java.core
