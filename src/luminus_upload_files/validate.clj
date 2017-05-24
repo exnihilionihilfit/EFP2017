@@ -19,6 +19,10 @@
 (def resource-path "/tmp/")
 (def validationMessage '())
 
+
+
+
+
 (use 'clojure.java.io)
 (use 'clojure.string)
 
