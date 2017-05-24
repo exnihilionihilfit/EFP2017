@@ -23,13 +23,11 @@
 (use 'clojure.string)
 
 
-
 (defn getText [file resource-path]
   (slurp (str resource-path (:filename file)) :encoding "ISO-8859-1"))
 
 (defn textAsLines [file resource-path]
   (concat text (split (getText file resource-path ) #";")))
-
 
 
 (defn splitFileIntoNameAndType [file]
@@ -67,9 +65,6 @@
                     (conj validationMessage "file upload failed"))
 
                  ))
-
-
-
              )
 )
 
