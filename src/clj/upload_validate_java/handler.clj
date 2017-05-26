@@ -7,26 +7,31 @@
             [ring.util.response :refer [file-response]]
             [upload_validate_java.validate :refer :all]
             [clj-time.core :as t]
+            [ring.middleware.webjars :refer [wrap-webjars]]
             ))
 
 
 
 (defroutes home-routes
   (GET "/" []
+        (layout/render "index.html" ))
+
+    (GET "/date" []
         (layout/render "index.html" {:date (t/today)}))
+
   (GET "/upload" []
-       (layout/render "upload.html"))
+       (layout/render "index.html" {:upload "true"}))
+    ;;   (layout/render "upload.html"))
 
   (POST "/upload" [file]
-       ;; (str (validateAll file resource-path))
-         (layout/render "validation.html" {:items (validateAll file resource-path)}));;layout/render "validation.html"
+         (layout/render "index.html" {:items (validateAll file resource-path) :validate "true"}));;layout/render "validation.html"
 
   (GET "/files/:filename" [filename]
        (file-response (str resource-path filename))))
 
 
 
-(def app (app-handler
+(def app ( wrap-webjars (app-handler
 
           ;; add your application routes here
-          [home-routes]))
+          [home-routes])))

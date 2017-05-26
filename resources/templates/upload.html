@@ -1,17 +1,5 @@
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <META name="viewport" content="width=device-width, initial-scale=1">
-    <title>Java File Validation</title>
-
-    <!-- styles -->
-{% style "/assets/bootstrap/css/bootstrap.min.css" %}
-{% style "/assets/font-awesome/css/font-awesome.min.css" %}
-    {% style "/css/screen.css" %}
-  </head>
-  <body>
+{% extends "index.html" %}
+{% block content %}
 <h2>Upload a file</h2>
 
 <form action="/upload" enctype="multipart/form-data" method="POST">
@@ -19,9 +7,7 @@
     <input class="btn" id="file" name="file" type="file" />
     <input class="btn" type="submit" value="upload" />
 </form>
-  </body>
-</html>
-
+{% endblock %}
 
 
 
