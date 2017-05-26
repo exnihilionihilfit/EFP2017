@@ -13,21 +13,20 @@
 
 (defroutes home-routes
   (GET "/" []
-        (layout/render "index.html" ))
+        (layout/render "index.html" {:default "true"}))
 
     (GET "/date" []
         (layout/render "index.html" {:date (t/today)}))
 
   (GET "/upload" []
        (layout/render "index.html" {:upload "true"}))
-    ;;   (layout/render "upload.html"))
+
 
   (POST "/upload" [file]
          (layout/render "index.html" {:items (validateAll file resource-path) :validate "true"}));;layout/render "validation.html"
 
   (GET "/files/:filename" [filename]
        (file-response (str resource-path filename))))
-
 
 
 (def app ( wrap-webjars (app-handler
