@@ -20,7 +20,7 @@ body {
   color: #ffffff;
   font-size: 14px;
   padding: 10px 20px 10px 20px;
-  border: solid #1f628d 1px;
+  border: solid #1f628d 3px;
   text-decoration: none;
 }
 
@@ -45,14 +45,16 @@ body {
 }
 
 .container{
+  padding: 20px 20px 10px 20px;
   background: #dbdbdb;
-
+  border: solid #1f628d 2px;
+  -webkit-border-radius: 3;
 }
 
-      </style>
 .navbar {
-  margin-bottom: 10px;
-  border-radius: 0px;
+  margin-bottom: 0px;
+  border-radius: 3px;
+
 }
 .navbar-brand {
   float: none;

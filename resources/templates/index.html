@@ -17,10 +17,10 @@
                   type="button"
                   data-toggle="collapse"
                   data-target="#collapsing-navbar">
-              &#9776;
+
           </button>
           <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
-              <a class="navbar-brand" href="{{servlet-context}}/">Validator</a>
+              <a class="navbar-brand" href="/">Validator</a>
               <ul class="nav navbar-nav">
                   <li class="nav-item">
                      <a class="btn" href="/upload"> file upload</a>
@@ -41,7 +41,7 @@
 
                   {% if default %}
                     This is a basic validator for java files. <br>
-                    Onlay for: <br>
+                    Only for: <br>
                   <li>Name: FileServer</li>
                   <li>Type: .java</li>
                   <li>Package: var.mom.jms.file </li>
@@ -71,5 +71,7 @@
                 {% endif %}
            </p>
     </div>
+{% script "/assets/tether/dist/js/tether.min.js" %}
+{% script "/assets/bootstrap/js/bootstrap.min.js" %}
   </body>
 </html>

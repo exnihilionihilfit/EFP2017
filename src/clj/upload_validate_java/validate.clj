@@ -8,7 +8,6 @@
             [clj-time.core :as t]))
 
 
-
 (def file-name "FileServer")
 (def file-type "java")
 (def importOrder "import")
@@ -26,7 +25,6 @@
 (use 'clojure.string)
 
 
-
 (defn getText [file resource-path]
   (slurp (str resource-path (:filename file)) :encoding "ISO-8859-1"))
 
@@ -34,7 +32,11 @@
   (concat text (split (getText file resource-path ) #";")))
 
 (defn removeAllWhiteSpaces [text]
-  ())
+  (clojure.string/replace text #"\s" ""))
+
+(defn createRegExFromString [string]
+  (re-pattern(java.util.regex.Pattern/quote string)))
+
 
 (defn splitFileIntoNameAndType [file]
   (split (:filename file) #"\." ))
@@ -53,8 +55,8 @@
 ;;entry point check
 
 (defn validateContainsMainFunction [file resource-path]
-  (boolean (re-find (re-pattern(java.util.regex.Pattern/quote (clojure.string/replace entryPoint #"\s" "")))
-                    (clojure.string/replace (getText file resource-path) #"\s" ""))))
+  (boolean (re-find (createRegExFromString (removeAllWhiteSpaces entryPoint))
+                    (removeAllWhiteSpaces (getText file resource-path)))))
 
 (defn validateFileExsits [file resource-path]
   (.exists (clojure.java.io/as-file (str resource-path (:filename file)))))
