@@ -65,6 +65,7 @@ button{
 }
 .navbar-nav .nav-item {
   float: none;
+  margin-bottom: 5px;
 }
 .navbar-divider,
 .navbar-nav .nav-item+.nav-item,
