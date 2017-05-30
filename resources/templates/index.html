@@ -26,6 +26,10 @@
                      <a class="btn" href="/upload"> file upload</a>
                   </li>
 
+                 <li class="nav-item">
+                      <a class="btn" href="/edit_config">edit config</a>
+                  </li>
+
                   <li class="nav-item">
                       <a class="btn" href="#">download result</a>
                   </li>
@@ -61,8 +65,30 @@
                     </form>
                 {% endif %}
 
+                {% if edit_config %}
+                      <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
+                        {% csrf-field %}
+
+                              {% for item in config %}
+                                <li class="results">
+                                  <input class="btn" id="{{item|first|remove:\":\"}}" name="{{item|first|remove:\":\"}}" type="text" placeholder="{{item|last}}" required/>
+                                </li>
+                              {% endfor %}
+
+
+                          <input class="btn" type="submit" value="save" />
+                      </form>
+                {% endif %}
+
+                {% if save_file %}
+                   <b>Config values:</b>
+                  {% for item in items %}
+                      <li class="results"> {{item|json|safe}} </li>
+                    {% endfor %}
+                {% endif %}
+
                 {% if validate %}
-                <br>
+
                 <b>Validation result:</b>
                  <ul>
                     {% for item in items %}

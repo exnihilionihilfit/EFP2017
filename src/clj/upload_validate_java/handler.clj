@@ -1,11 +1,12 @@
 (ns upload_validate_java.handler
   (:use compojure.core)
   (:require [upload_validate_java.layout :as layout]
+            [upload_validate_java.config :refer :all]
+              [upload_validate_java.validate :refer :all]
             [noir.io :as io]
             [noir.response :as response]
             [noir.util.middleware :refer [app-handler]]
             [ring.util.response :refer [file-response]]
-            [upload_validate_java.validate :refer :all]
             [clj-time.core :as t]
             [ring.middleware.webjars :refer [wrap-webjars]]
             ))
@@ -20,6 +21,13 @@
 
   (GET "/upload" []
        (layout/render "index.html" {:upload "true"}))
+
+    (GET "/edit_config" []
+       (layout/render "index.html" {:edit_config "true" :config config}))
+
+
+  (POST "/save_config" [& args]
+         (layout/render "index.html" {:items (save_config args) :save_file "true" }))
 
 
   (POST "/upload" [file]

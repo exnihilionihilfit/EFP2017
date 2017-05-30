@@ -1,5 +1,6 @@
 (ns upload_validate_java.validate
   ( :require [upload_validate_java.layout :as layout]
+              [upload_validate_java.config :refer :all]
             [noir.io :as io]
             [noir.response :as response]
             [noir.util.middleware :refer [app-handler]]
@@ -12,25 +13,6 @@
 (use 'clojure.string)
 
 
-;; read/write config file
-
-(def adress "config/config.json")
-
-(defn json_write [string]
-  (json/write-str string))
-
-(defn json_read [string]
-  (json/read-str string :key-fn keyword))
-
-(defn convertRawJsonConfig [file_as_string]
-  (json_read file_as_string))
-
-(defn readJsonConfigFile [adress]
-  (slurp (do (java_io/resource adress))))
-
-(def config (json_read (readJsonConfigFile adress)))
-
-;;
 
 
 (def text '())
