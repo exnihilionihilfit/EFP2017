@@ -34,6 +34,10 @@ body {
   text-decoration: none;
 }
 
+button{
+  cursor: pointer;
+}
+
 .results{
   padding: 10px 20px 10px 20px;
    color:#333;
@@ -61,6 +65,7 @@ body {
 }
 .navbar-nav .nav-item {
   float: none;
+  margin-bottom: 5px;
 }
 .navbar-divider,
 .navbar-nav .nav-item+.nav-item,
