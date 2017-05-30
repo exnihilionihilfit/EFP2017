@@ -1,28 +1,43 @@
 (ns upload_validate_java.validate
-  (:require [upload_validate_java.layout :as layout]
+  ( :require [upload_validate_java.layout :as layout]
             [noir.io :as io]
             [noir.response :as response]
             [noir.util.middleware :refer [app-handler]]
             [ring.util.response :refer [file-response]]
+            [clj-time.core :as t]
+            [clojure.java.io :as java_io]
+            [clojure.data.json :as json]))
 
-            [clj-time.core :as t]))
+(use 'clojure.java.io)
+(use 'clojure.string)
 
 
-(def file-name "FileServer")
-(def file-type "java")
-(def importOrder "import")
-(def package "package")
-(def packageName "var.mom.jms.file")
-(def entryPoint "static void main(String [] args)")
+;; read/write config file
+
+(def adress "config/config.json")
+
+(defn json_write [string]
+  (json/write-str string))
+
+(defn json_read [string]
+  (json/read-str string :key-fn keyword))
+
+(defn convertRawJsonConfig [file_as_string]
+  (json_read file_as_string))
+
+(defn readJsonConfigFile [adress]
+  (slurp (do (java_io/resource adress))))
+
+(def config (json_read (readJsonConfigFile adress)))
+
+;;
+
 
 (def text '())
 (def validationMessage '())
 
-;; uploaded file dir
+;; uploaded file to validate dir
 (def resource-path "/tmp/")
-
-(use 'clojure.java.io)
-(use 'clojure.string)
 
 
 (defn getText [file resource-path]
@@ -42,20 +57,21 @@
   (split (:filename file) #"\." ))
 
 (defn validateFileName [file]
-  (= ( first (splitFileIntoNameAndType file)) file-name))
+  (= ( first (splitFileIntoNameAndType file)) (get config :file-name)))
 
 (defn validateFileType [file]
-  (= ( second (splitFileIntoNameAndType file)) file-type))
+  (= ( second (splitFileIntoNameAndType file)) (get config :file-type)))
 
 (defn validatePackageName [file resource-path]
 
-      (and (= (str (first(split (first (textAsLines file resource-path )) #" "))) package)
-         (= (str (second(split (first (textAsLines file resource-path )) #" "))) packageName))
+      (and (= (str (first(split (first (textAsLines file resource-path )) #" "))) (get config :package))
+         (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get config :packageName)))
   )
 ;;entry point check
 
+
 (defn validateContainsMainFunction [file resource-path]
-  (boolean (re-find (createRegExFromString (removeAllWhiteSpaces entryPoint))
+  (boolean (re-find (createRegExFromString (removeAllWhiteSpaces (get config :entryPoint)))
                     (removeAllWhiteSpaces (getText file resource-path)))))
 
 (defn validateFileExsits [file resource-path]
@@ -69,6 +85,7 @@
              (if(and (validateFileName file)(validateFileType file) )
                (concat
                   (io/upload-file resource-path file)
+
                   (if (validateFileExsits file resource-path)
                     (concat (conj validationMessage  "file upload successfull")
                             (if (validatePackageName file resource-path)

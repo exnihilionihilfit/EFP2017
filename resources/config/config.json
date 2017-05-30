@@ -1,0 +1,9 @@
+{
+  "file-name": "FileServer",
+  "file-type": "java",
+  "importOrder": "import",
+  "package" :  "package",
+  "packageName" : "var.mom.jms.file",
+  "entryPoint" : "static void main(String [] args)"
+}
+

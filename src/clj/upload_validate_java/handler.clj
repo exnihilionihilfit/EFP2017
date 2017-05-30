@@ -15,7 +15,7 @@
   (GET "/" []
         (layout/render "index.html" {:default "true"}))
 
-    (GET "/date" []
+  (GET "/date" []
         (layout/render "index.html" {:date (t/today)}))
 
   (GET "/upload" []

@@ -15,6 +15,7 @@
                  [metosin/ring-http-response "0.8.2"]
                  [mount "0.1.11"]
                  [org.clojure/clojure "1.8.0"]
+                 [org.clojure/data.json "0.2.6"]
                  [org.clojure/tools.cli "0.3.5"]
                  [org.clojure/tools.logging "0.3.1"]
                  [org.webjars.bower/tether "1.4.0"]
@@ -29,7 +30,8 @@
                  [selmer "1.10.7"]
                  [environ "1.1.0"]
                  [noir-exception "0.2.2"]
-                 [lib-noir "0.9.9"]]
+                 [lib-noir "0.9.9"]
+                 ]
 
   :min-lein-version "2.0.0"
 
