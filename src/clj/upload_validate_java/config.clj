@@ -34,21 +34,10 @@
 
 ;;(def config (json_read (readJsonConfigFile adress)))
 
-;;(defn config [] (let [content (json_read (readJsonConfigFile adress))] content))
-
 (defn config []  (json_read (readJsonConfigFile adress)))
 
-
-;;(get config :file_name)
-;;str (get args :new-file-name)
-;; (doseq [keyval {:a 1 :b 2}] (prn (key keyval) (val keyval)))
-
-
-(defn updateConfigEntriy[configKey configValue]
-  ())
-
 ;; merge the loaded and via web interface new added values (remove also with post send :__anti-forgery-token)
-;;( merge config  (dissoc args :__anti-forgery-token))
+
 (defn save_config [args]
   (writeJsonConfigFile adress ( merge (config)  (dissoc args :__anti-forgery-token)) ) )
 

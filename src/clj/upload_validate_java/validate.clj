@@ -39,21 +39,21 @@
   (split (:filename file) #"\." ))
 
 (defn validateFileName [file]
-  (= ( first (splitFileIntoNameAndType file)) (get config :file-name)))
+  (= ( first (splitFileIntoNameAndType file)) (get (config) :file-name)))
 
 (defn validateFileType [file]
-  (= ( second (splitFileIntoNameAndType file)) (get config :file-type)))
+  (= ( second (splitFileIntoNameAndType file)) (get (config) :file-type)))
 
 (defn validatePackageName [file resource-path]
 
-      (and (= (str (first(split (first (textAsLines file resource-path )) #" "))) (get config :package))
-         (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get config :packageName)))
+      (and (= (str (first(split (first (textAsLines file resource-path )) #" "))) (get (config) :package))
+         (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get (config) :packageName)))
   )
 ;;entry point check
 
 
 (defn validateContainsMainFunction [file resource-path]
-  (boolean (re-find (createRegExFromString (removeAllWhiteSpaces (get config :entryPoint)))
+  (boolean (re-find (createRegExFromString (removeAllWhiteSpaces (get (config) :entryPoint)))
                     (removeAllWhiteSpaces (getText file resource-path)))))
 
 (defn validateFileExsits [file resource-path]
