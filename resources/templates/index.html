@@ -71,7 +71,11 @@
 
                               {% for item in config %}
                                 <li class="results">
-                                  <input class="btn" id="{{item|first|remove:\":\"}}" name="{{item|first|remove:\":\"}}" type="text" placeholder="{{item|last}}" required/>
+                                  <input class="btn" id="{{item|first|remove:\":\"}}"
+                                         name="{{item|first|remove:\":\"}}"
+                                         type="text"
+                                         value="{{item|last}}"
+                                         placeholder="{{item|first|remove:\":\"}}" />
                                 </li>
                               {% endfor %}
 

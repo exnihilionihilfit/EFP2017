@@ -18,7 +18,7 @@
 (def adress "config/config.json")
 
 (defn json_write [string]
-  (json/write-str string))
+  (json/write-str string :key-fn name) )
 
 (defn json_read [string]
   (json/read-str string :key-fn keyword))
@@ -30,9 +30,14 @@
   (slurp (do (java_io/resource adress))))
 
 (defn writeJsonConfigFile [adress content]
-  (spit adress content))
+  (spit (do (java_io/resource adress)) (json_write  content)))
 
-(def config (json_read (readJsonConfigFile adress)))
+;;(def config (json_read (readJsonConfigFile adress)))
+
+;;(defn config [] (let [content (json_read (readJsonConfigFile adress))] content))
+
+(defn config []  (json_read (readJsonConfigFile adress)))
+
 
 ;;(get config :file_name)
 ;;str (get args :new-file-name)
@@ -43,6 +48,10 @@
   ())
 
 ;; merge the loaded and via web interface new added values (remove also with post send :__anti-forgery-token)
+;;( merge config  (dissoc args :__anti-forgery-token))
 (defn save_config [args]
-  ( merge config  (dissoc args :__anti-forgery-token)) )
+  (writeJsonConfigFile adress ( merge (config)  (dissoc args :__anti-forgery-token)) ) )
+
+(defn get_config [args]
+  ( merge (config)  (dissoc args :__anti-forgery-token)))
 
