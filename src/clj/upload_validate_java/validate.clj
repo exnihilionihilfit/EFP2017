@@ -9,11 +9,9 @@
             [clojure.java.io :as java_io]
             [clojure.data.json :as json]))
 
+
 (use 'clojure.java.io)
 (use 'clojure.string)
-
-
-
 
 (def text '())
 (def validationMessage '())
@@ -39,21 +37,21 @@
   (split (:filename file) #"\." ))
 
 (defn validateFileName [file]
-  (= ( first (splitFileIntoNameAndType file)) (get (config) :file-name)))
+    (= ( first (splitFileIntoNameAndType file))(get (get  (config) :file-name) :name)))
 
 (defn validateFileType [file]
-  (= ( second (splitFileIntoNameAndType file)) (get (config) :file-type)))
+  (= ( second (splitFileIntoNameAndType file)) (get (get  (config) :file-type) :name)))
 
 (defn validatePackageName [file resource-path]
 
-      (and (= (str (first(split (first (textAsLines file resource-path )) #" "))) (get (config) :package))
-         (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get (config) :packageName)))
+      (and (= (str (first(split (first (textAsLines file resource-path )) #" "))) (get (get  (config) :package) :name))
+         (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get (get  (config) :packageName) :name) ))
   )
 ;;entry point check
 
 
 (defn validateContainsMainFunction [file resource-path]
-  (boolean (re-find (createRegExFromString (removeAllWhiteSpaces (get (config) :entryPoint)))
+  (boolean (re-find (createRegExFromString (removeAllWhiteSpaces (get (get  (config) :entryPoint) :name )))
                     (removeAllWhiteSpaces (getText file resource-path)))))
 
 (defn validateFileExsits [file resource-path]

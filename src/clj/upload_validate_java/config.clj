@@ -10,9 +10,6 @@
 (use 'clojure.java.io)
 (use 'clojure.string)
 
-
-
-
 ;; read/write config file
 
 (def adress "config/config.json")

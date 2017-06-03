@@ -74,7 +74,7 @@
                                   <input class="btn" id="{{item|first|remove:\":\"}}"
                                          name="{{item|first|remove:\":\"}}"
                                          type="text"
-                                         value="{{item|last}}"
+                                         value="{{item|last|first|last|remove:\":\"}}"
                                          placeholder="{{item|first|remove:\":\"}}" />
                                 </li>
                               {% endfor %}
