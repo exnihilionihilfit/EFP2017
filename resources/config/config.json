@@ -1,6 +1,8 @@
-{"file-name":{"name" :"FileServer", "use": "true"},
- "file-type":{"name" :"java", "use": "true"},
- "importOrder":{"name" :"import", "use": "true"},
- "package":{"name" :"package", "use": "true"},
- "packageName":{"name" :"var.mom.jms.file", "use": "true"},
- "entryPoint":{"name" :"static void main(String [] args)", "use": "true"}}
+{"file-name":{"name" :"FileServer", "use": "true", "fail": "Incorrect file name" , "success": "File name Okay"},
+ "file-type":{"name" :"java", "use": "true", "fail": "Incorrect file type" , "success": "File type Okay"},
+ "importOrder":{"name" :"import", "use": "true" , "fail": "Incorrect import order" , "success": "Import order Okay"} ,
+ "package":{"name" :"package", "use": "true", "fail": "Incorrect package decleration" , "success": "Package decleration Okay"},
+ "packageName":{"name" :"var.mom.jms.file", "use": "true" "fail": "Incorrect package name" , "success": "Package name Okay"},
+ "entryPoint":{"name" :"static void main(String [] args)", "use": "true","fail": "No entry point found" , "success": "Entry point Okay"}
+
+}
