@@ -20,7 +20,7 @@
 (def resource-path "/tmp/")
 
 (defn getConfigProperty [propertyType configMap]
-  (for [x configMap] (if( = (get x :type) propertyType)(map x)))
+  (for [x configMap] (if( = (get x :type) propertyType) (x) ) x)
 )
 
 (defn getText [file resource-path]
@@ -38,9 +38,9 @@
 
 (defn splitFileIntoNameAndType [file]
   (split (:filename file) #"\." ))
-
+;; first get config ymap with right type then get the name field of this map an compare it with the file name
 (defn validateFileName [file]
-    (= ( first (splitFileIntoNameAndType file))(map :name (get (config) :items))))
+    (= ( first (splitFileIntoNameAndType file))(get (getConfigProperty "file-name" (get (config) :items)) :name)))
 
 (defn validateFileType [file]
   (= ( second (splitFileIntoNameAndType file)) (get (get  (config) :file-type) :name)))
@@ -62,7 +62,7 @@
 
 (defn validateAll [file resource-path]
 
-    (concat  (if(validateFileName file)(conj validationMessage  "file name okay")(conj validationMessage "file name invalide"))
+    (concat  (if(validateFileName file)(conj validationMessage  "file name okay")(conj validationMessage  (pr-str(getConfigProperty "file-name" (get (config) :items))  )))
              (if(validateFileType file)(conj validationMessage  "file type okay")(conj validationMessage "file type invalide"))
 
              (if(and (validateFileName file)(validateFileType file) )
