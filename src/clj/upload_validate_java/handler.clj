@@ -23,7 +23,7 @@
        (layout/render "index.html" {:upload "true"}))
 
   (GET "/edit_config" []
-       (layout/render "index.html" {:edit_config "true" :config (config)}))
+       (layout/render "index.html" {:edit_config "true" :config (config)} true))
 
 
   (POST "/save_config" [& args]

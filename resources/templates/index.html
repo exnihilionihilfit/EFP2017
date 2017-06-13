@@ -69,15 +69,20 @@
                       <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
                         {% csrf-field %}
 
-                              {% for item in config %}
-                                <li class="results">
-                                  <input class="btn" id="{{item|first|remove:\":\"}}"
-                                         name="{{item|first|remove:\":\"}}"
+
+                        {% for item in config.items %}
+                        <p>{{ item.items }}.</p>
+                        <li class="results">   {{ item.type}}
+                          <input class="btn" id="{ {item.type}}"
+                                         name="{ {item.type}}"
                                          type="text"
-                                         value="{{item|last|first|last|remove:\":\"}}"
-                                         placeholder="{{item|first|remove:\":\"}}" />
-                                </li>
-                              {% endfor %}
+                                         value="{{item.name}}"
+                                        />
+                        </li>
+
+
+ {% endfor %}
+
 
 
                           <input class="btn" type="submit" value="save" />

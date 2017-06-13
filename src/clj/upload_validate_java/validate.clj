@@ -37,7 +37,7 @@
   (split (:filename file) #"\." ))
 
 (defn validateFileName [file]
-    (= ( first (splitFileIntoNameAndType file))(get (get  (config) :file-name) :name)))
+    (= ( first (splitFileIntoNameAndType file))(map :name (get (config) :items))))
 
 (defn validateFileType [file]
   (= ( second (splitFileIntoNameAndType file)) (get (get  (config) :file-type) :name)))

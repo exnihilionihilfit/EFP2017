@@ -33,6 +33,8 @@
 
 (defn config []  (json_read (readJsonConfigFile adress)))
 
+
+
 ;; merge the loaded and via web interface new added values (remove also with post send :__anti-forgery-token)
 
 (defn save_config [args]
