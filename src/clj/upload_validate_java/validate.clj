@@ -19,9 +19,16 @@
 ;; uploaded file to validate dir
 (def resource-path "/tmp/")
 
+(defn extractConfigProperty [propertyType configMap]
+  (for [x configMap] (if( = (get x :type) propertyType)  x ) ))
+
+
 (defn getConfigProperty [propertyType configMap]
-  (for [x configMap] (if( = (get x :type) propertyType) (x) ) x)
-)
+  (into {} (extractConfigProperty propertyType configMap)))
+
+
+
+
 
 (defn getText [file resource-path]
   (slurp (str resource-path (:filename file)) :encoding "ISO-8859-1"))
