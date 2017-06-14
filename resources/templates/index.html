@@ -66,13 +66,17 @@
                 {% endif %}
 
                 {% if edit_config %}
-                      <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
-                        {% csrf-field %}
+
 
 
                         {% for item in config.items %}
+
+             <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
+                        {% csrf-field %}
                         <p>{{ item.items }}</p>
                         <ul class="results">   {{ item.type}}
+
+
                           <input class="btn" id="{{item.type}}"
                                          name="{{item.type}}"
                                          type="text"
@@ -85,12 +89,14 @@
                                          value="{{item.use}}"
                                         />
                         </ul>
+
+                     <input class="btn" type="submit" value="save" />
+                      </form>
                        {% endfor %}
 
 
 
-                          <input class="btn" type="submit" value="save" />
-                      </form>
+
                 {% endif %}
 
                 {% if save_file %}
