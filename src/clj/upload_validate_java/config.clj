@@ -1,5 +1,6 @@
 (ns upload_validate_java.config
-  ( :require[noir.io :as io]
+  ( :require
+            [noir.io :as io]
             [noir.response :as response]
             [noir.util.middleware :refer [app-handler]]
             [ring.util.response :refer [file-response]]
@@ -9,6 +10,15 @@
 
 (use 'clojure.java.io)
 (use 'clojure.string)
+
+(defn extractConfigProperty [propertyType configMap]
+  "iterate over a vector of maps and return the one who contains the propertyType (String) as lazy-sequenz"
+  (for [x configMap] (if( = (get x :type) propertyType)  x ) ))
+
+
+(defn getConfigProperty [propertyType configMap]
+  "get a lazy-sequenz and convert it to a map. Only used with extractConfigProperty"
+  (into {} (extractConfigProperty propertyType configMap)))
 
 ;; read/write config file
 

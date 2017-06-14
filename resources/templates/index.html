@@ -71,17 +71,21 @@
 
 
                         {% for item in config.items %}
-                        <p>{{ item.items }}.</p>
-                        <li class="results">   {{ item.type}}
-                          <input class="btn" id="{ {item.type}}"
-                                         name="{ {item.type}}"
+                        <p>{{ item.items }}</p>
+                        <ul class="results">   {{ item.type}}
+                          <input class="btn" id="{{item.type}}"
+                                         name="{{item.type}}"
                                          type="text"
                                          value="{{item.name}}"
                                         />
-                        </li>
 
-
- {% endfor %}
+                             <input class="btn" id="{{item.type}}"
+                                         name="{{item.type}}"
+                                         type="text"
+                                         value="{{item.use}}"
+                                        />
+                        </ul>
+                       {% endfor %}
 
 
 

@@ -20,17 +20,6 @@
 ;; uploaded file to validate dir
 (def resource-path "/tmp/")
 
-(defn extractConfigProperty [propertyType configMap]
-  "iterate over a vector of maps and return the one who contains the propertyType (String) as lazy-sequenz"
-  (for [x configMap] (if( = (get x :type) propertyType)  x ) ))
-
-
-(defn getConfigProperty [propertyType configMap]
-  "get a lazy-sequenz and convert it to a map. Only used with extractConfigProperty"
-  (into {} (extractConfigProperty propertyType configMap)))
-
-;; to access a specific property in the json config file
-;; use (get (getConfigProperty "PROPERTY-NAME" (get (config) :items)) :KEY)
 
 
 (defn getText [file resource-path]
@@ -83,7 +72,8 @@
   (.exists (clojure.java.io/as-file (str resource-path (:filename file)))))
 
 (defn validateAll [file resource-path]
-  "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run"
+  "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run
+  It returns a string with all messages of success and failure"
     (concat  (if(validateFileName file)
                (conj validationMessage  (get (getConfigProperty "file-name" (get (config) :items)) :success))
                (conj validationMessage  (get (getConfigProperty "file-name" (get (config) :items)) :fail)))
