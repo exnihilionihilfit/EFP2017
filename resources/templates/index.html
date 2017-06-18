@@ -6,142 +6,128 @@
         <title>Validator</title>
 
         <!-- styles -->
-        {% style "/assets/bootstrap/css/bootstrap.min.css" %}
         {% style "/assets/font-awesome/css/font-awesome.min.css" %}
         {% style "/css/screen.css" %}
+        {% style "/css/bootstrap.css" %}
+        {% style "/css/bootstrap.min.css" %}
+        {% style "/css/darkly.css" %}
         </head>
       <body>
-        <!-- navbar -->
-        <nav class="navbar navbar-dark bg-primary" role="navigation">
-          <button class="navbar-toggler hidden-sm-up"
-                  type="button"
-                  data-toggle="collapse"
-                  data-target="#collapsing-navbar">
+        <div class="bs-component">
+          <nav class="navbar navbar-default">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="#">Java Validator</a>
+              </div>
 
-          </button>
-          <div class="collapse navbar-toggleable-xs" id="collapsing-navbar">
-            <a class="navbar-brand" href="/">Validator</a>
-            <ul class="nav navbar-nav">
-              <li class="nav-item">
-                <a class="btn" href="/upload"> file upload</a>
-              </li>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                  <li>
+                    <a href="/upload">File Upload</a>
+                  </li>
 
-              <li class="nav-item">
-                <a class="btn" href="/edit_config">edit config</a>
-              </li>
+                  <li>
+                    <a href="/edit_config"><i class="fa fa-cog"></i> Edit Config</a>
+                  </li>
 
-              <li class="nav-item">
-                <a class="btn" href="#">download result</a>
-              </li>
+                  <li>
+                    <a href="#"><i class="fa fa-download"></i> Download Result</a>
+                  </li>
 
-              <li class="nav-item">
-                <a class="btn" href="/date">about</a>
-              </li>
-              </li>
+                  <li>
+                    <a href="/date"><i class="fa fa-info-circle"></i> About</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+
+        <div class="bs-component">
+          <div class="jumbotron" id="content">
+            <p style="color:#999999">
+
+              {% if default %}
+              This is a basic validator for java files. <br>
+              Only for: <br>
+              <li>Name: FileServer</li>
+              <li>Type: .java</li>
+              <li>Package: var.mom.jms.file </li>
+              <li> With entry point: public static void main(String[] args)</li>
+              {% endif %}
+
+              {% if date %}
+              We have {{date}}
+              {% endif %}
+
+              {% if upload %}
+            <form class="upload" action="/upload" enctype="multipart/form-data" method="POST">
+              {% csrf-field %}
+              <div class="pull-left">
+                <input style="width:300px" class="form-control" id="fileName" type="text" placeholder="Java File Name..." value="" disabled="">
+              </div>
+
+              <label class="btn btn-default btn-file pull-left">
+                <i class="fa fa-folder-open-o"></i> Choose File...
+                <input style="display:none" id="file" name="file" type="file" onchange="$('#fileName').val($(this).val())">
+              </label>
+
+              <button class="btn btn-primary pull-left" style="margin-left: 10px" type="submit" ><i class="fa fa-upload" aria-hidden="true"></i> Upload...</button>
+            </form>
+            {% endif %}
+
+            {% if edit_config %}
+
+            <form class="upload col-lg-6 col-md-6 col-xs-6" action="/save_config" enctype="multipart/form-data" method="POST">
+              {% csrf-field %}
+
+              {% for item in config %}
+              <label class="control-label">{{item|last}}</label>
+              <input class="form-control input-sm" id="{{item|first|remove:\":\"}}" name="{{item|first|remove:\":\"}}" type="text" placeholder="{{item|last}}" required/>
+              <br>
+              {% endfor %}
+
+
+              <button class="btn btn-primary pull-right" type="submit"><i class="fa fa-floppy-o"></i> Save...</button>
+            </form>
+
+            <div class="bs-component col-lg-6 col-md-6 col-xs-6">
+              <h2>Configure Validator</h2>
+              <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
+            </div>
+            {% endif %}
+
+            {% if save_file %}
+            <b>Config values:</b>
+            {% for item in items %}
+            <li class="results"> {{item|json|safe}} </li>
+            {% endfor %}
+            {% endif %}
+
+            {% if validate %}
+            <b><i class="fa fa-clipboard"></i> Validation result:</b>
+
+            <div class="col-lg-6 col-md-6 col-xs-6">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success" style="width: 75%"></div>
+            </div>
+
+            <ul>
+              {% for item in items %}
+              <li style="text-transform:uppercase"> {{item|safe}} </li>
+              {% endfor %}
             </ul>
-          </div>
-        </nav>
-      <div class="container">
-        <p>
+            </div>
+            {% endif %}
 
-          {% if default %}
-          This is a basic validator for java files. <br>
-          Only for: <br>
-          <li>Name: FileServer</li>
-          <li>Type: .java</li>
-          <li>Package: var.mom.jms.file </li>
-          <li> With entry point: public static void main(String[] args)</li>
-          {% endif %}
+            </p>
+        </div>
 
-          {% if date %}
-          This is a file validator written with clojure. With this validator a file could be uploaded and tested. The tests could be
-          specified in a seperate json file. Each test consists of a pattern and a respons for success and failure. Each test could be
-          configurated by using the app itself.
-
-          This application is compield into java byte-code and packed as a jar file and could be accessed with a browser (IP-Adress + Port 3000 e.g. http://127.0.0.1:3000)
-
-
-
-          {% endif %}
-
-          {% if upload %}
-        <form class="upload" action="/upload" enctype="multipart/form-data" method="POST">
-          {% csrf-field %}
-          <input class="btn" id="file" name="file" type="file" />
-          <input class="btn" type="submit" value="upload" />
-        </form>
-        {% endif %}
-
-        {% if edit_config %}
-
-
-
-        <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
-
-          {% for item in config.items %}
-
-
-          {% csrf-field %}
-          <p>{{ item.items }}</p>
-          <ul class="results">   {{ item.type}}
-
-
-<ul class="results">{{ item.name}}
-            <input class="btn" id="{{item.type}}"
-                   name="{{item.type}}"
-                   type="text"
-                   value="{{item.name}}"
-                   /></ul>
-<ul class="results">{{ item.use}}
-            <input class="btn" id="{{item.type}}"
-                   name="{{item.type}}"
-                   type="text"
-                   value="{{item.use}}"
-                   /></ul>
-<ul class="results">{{ item.fail}}
-                 <input class="btn" id="{{item.type}}"
-                   name="{{item.type}}"
-                   type="text"
-                   value="{{item.fail}}"
-                   /></ul>
-<ul class="results">{{ item.success}}
-                 <input class="btn" id="{{item.type}}"
-                   name="{{item.type}}"
-                   type="text"
-                   value="{{item.success}}"
-                   /></ul>
-          </ul>
-
-
-          {% endfor %}
-
-          <input class="btn" type="submit" value="save" />
-        </form>
-
-
-        {% endif %}
-
-        {% if save_file %}
-        <b>Config values:</b>
-        {% for item in items %}
-        <li class="results"> {{item|json|safe}} </li>
-        {% endfor %}
-        {% endif %}
-
-        {% if validate %}
-
-        <b>Validation result:</b>
-        <ul>
-          {% for item in items %}
-          <li class="results"> {{item|upper}} </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-        </p>
-      </div>
-
-    {% script "/assets/tether/dist/js/tether.min.js" %}
-    {% script "/assets/jquery/jquery.min.js" %}
-    {% script "/assets/bootstrap/js/bootstrap.min.js" %}
-    </body>
-</html>
+      {% script "/assets/tether/dist/js/tether.min.js" %}
+      {% script "/assets/jquery/jquery.min.js" %}
+      {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+      </body>
+    </html>

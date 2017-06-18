@@ -1,12 +1,12 @@
 (ns upload_validate_java.config
   ( :require
             [noir.io :as io]
-            [noir.response :as response]
-            [noir.util.middleware :refer [app-handler]]
-            [ring.util.response :refer [file-response]]
-            [clj-time.core :as t]
-            [clojure.java.io :as java_io]
-            [clojure.data.json :as json]))
+    [noir.response :as response]
+    [noir.util.middleware :refer [app-handler]]
+    [ring.util.response :refer [file-response]]
+    [clj-time.core :as t]
+    [clojure.java.io :as java_io]
+    [clojure.data.json :as json]))
 
 (use 'clojure.java.io)
 (use 'clojure.string)
