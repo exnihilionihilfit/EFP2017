@@ -56,3 +56,6 @@ button{
   color: #e74c3c
 }
 
+#configInputContainer input{
+  margin-bottom: 5px;
+}
