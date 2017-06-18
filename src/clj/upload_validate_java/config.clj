@@ -52,13 +52,19 @@
 
 (defn save_config [args]
   "merge the loaded and via web interface new added values (remove also with post send :__anti-forgery-token)"
-  (writeJsonConfigFile adress ( merge (config)  (dissoc args :__anti-forgery-token)) ) )
+  (writeJsonConfigFile adress ( config) ))
 
-(defn get_config [args]
-  ""
-    (dissoc args :__anti-forgery-token))
 
 (defn extractPOSTMessage [args]
   "x is the type field of the json object entry. "
-  (for [x args] (  (getConfigProperty (key x) (get (config) :items)) ) ))
+  (for [x args]   ( str (getConfigProperty "file-type" (get (config) :items))  )))
+
+
+
+
+(defn get_config [args]
+  ""
+    (extractPOSTMessage(dissoc args :__anti-forgery-token)))
+
+
 

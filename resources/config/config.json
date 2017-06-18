@@ -1,1 +1,8 @@
-{"items":[{"type":"file-name","name":"FileServer","use":"true","fail":"Incorrect file name","success":"File name Okay"},{"type":"file-type","name":"java","use":"true","fail":"Incorrect file type","success":"File type Okay"},{"type":"importOrder","name":"import","use":"true","fail":"Incorrect import order","success":"Import order Okay"},{"type":"package","name":"package","use":"true","fail":"Incorrect package decleration","success":"Package decleration Okay"},{"type":"packageName","name":"var.mom.jms.file","use":"true","fail":"Incorrect package name","success":"Package name Okay"},{"type":"entryPoint","name":"static void main(String [] args)","use":"true","fail":"No entry point found","success":"Entry point Okay"}],"package":["package","true"],"file-name":["FileServer","true"]}
+{"items":[
+  {"type": "file-name", "name" :"FileServer", "use": "true", "fail": "Incorrect file name" , "success": "File name Okay"},
+  {"type": "file-type","name" :"java", "use": "true", "fail": "Incorrect file type" , "success": "File type Okay"},
+  {"type": "importOrder", "name" :"import", "use": "true" , "fail": "Incorrect import order" , "success": "Import order Okay"} ,
+  {"type": "package", "name" :"package", "use": "true", "fail": "Incorrect package decleration" , "success": "Package decleration Okay"},
+  {"type": "packageName", "name" :"var.mom.jms.file", "use": "true", "fail": "Incorrect package name" , "success": "Package name Okay"},
+  {"type":  "entryPoint", "name" :"static void main(String [] args)", "use": "true","fail": "No entry point found" , "success": "Entry point Okay"}
+]
