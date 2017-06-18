@@ -78,8 +78,9 @@
                (conj validationMessage  (get (getConfigProperty "file-name" (get (config) :items)) :success))
                (conj validationMessage  (get (getConfigProperty "file-name" (get (config) :items)) :fail)))
 
-   (concat  (if(validateFileName file)(conj validationMessage  "<span>file name <i class='fa fa-check'></i></span>")(conj validationMessage "<span>file type <i class='fa fa-times'></i></span>"))
-             (if(validateFileType file)(conj validationMessage  "<span>file name <i class='fa fa-check'></i></span>")(conj validationMessage "<span>file type <i class='fa fa-times'></i></span>"))
+             (if(validateFileType file)
+               (conj validationMessage  (get (getConfigProperty "file-type" (get (config) :items)) :success))
+               (conj validationMessage  (get (getConfigProperty "file-type" (get (config) :items)) :fail)))
 
              (if(and (validateFileName file)(validateFileType file) )
                (concat
