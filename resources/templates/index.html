@@ -75,24 +75,65 @@
             {% endif %}
 
             {% if edit_config %}
+            <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
 
-            <form class="upload col-lg-6 col-md-6 col-xs-6" action="/save_config" enctype="multipart/form-data" method="POST">
-              {% csrf-field %}
+              <div class="row">
 
-              {% for item in config %}
-              <label class="control-label">{{item|last}}</label>
-              <input class="form-control input-sm" id="{{item|first|remove:\":\"}}" name="{{item|first|remove:\":\"}}" type="text" placeholder="{{item|last}}" required/>
-              <br>
-              {% endfor %}
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                  <h2>Example body text</h2>
+                  <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
+                </div>
 
+                {% for item in config.items %}
+                {% csrf-field %}
 
-              <button class="btn btn-primary pull-right" type="submit"><i class="fa fa-floppy-o"></i> Save...</button>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                  <h4>
+                    {{ item.type}}:
+                    {{ item.name}}
+                  </h4>
+                  <div id="configInputContainer">
+
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.name}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.use}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.fail}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.success}}"
+                           />
+                  </div>
+                  <br><br>
+                </div>
+
+                {% endfor %}
+
+              </div>
+
+              <button class="btn btn-primary pull-left" type="submit" value="save"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save...</button>
+
             </form>
 
-            <div class="bs-component col-lg-6 col-md-6 col-xs-6">
-              <h2>Configure Validator</h2>
-              <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
-            </div>
+
+            {% endif %}
+
+            {% if save_file %}
+            <b>Config values:</b>
+            {% for item in items %}
+            <li class="results"> {{item|json|safe}} </li>
+            {% endfor %}
             {% endif %}
 
             {% if save_file %}
@@ -106,23 +147,23 @@
             <b><i class="fa fa-clipboard"></i> Validation result:</b>
 
             <div class="col-lg-6 col-md-6 col-xs-6">
-            <div class="progress">
+              <div class="progress">
                 <div class="progress-bar progress-bar-success" style="width: 75%"></div>
-            </div>
+              </div>
 
-            <ul>
-              {% for item in items %}
-              <li style="text-transform:uppercase"> {{item|safe}} </li>
-              {% endfor %}
-            </ul>
+              <ul>
+                {% for item in items %}
+                <li style="text-transform:uppercase"> {{item|safe}} </li>
+                {% endfor %}
+              </ul>
             </div>
             {% endif %}
 
             </p>
         </div>
 
-      {% script "/assets/tether/dist/js/tether.min.js" %}
-      {% script "/assets/jquery/jquery.min.js" %}
-      {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+        {% script "/assets/tether/dist/js/tether.min.js" %}
+        {% script "/assets/jquery/jquery.min.js" %}
+        {% script "/assets/bootstrap/js/bootstrap.min.js" %}
       </body>
-    </html>
+      </html>
