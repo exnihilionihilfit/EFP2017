@@ -23,6 +23,8 @@
        (layout/render "index.html" {:upload "true"}))
 
   (GET "/edit_config" []
+        (selmer.filters/add-filter! :key key)
+       (selmer.filters/add-filter! :val val)
        (layout/render "index.html" {:edit_config "true" :config (config)} true))
 
 

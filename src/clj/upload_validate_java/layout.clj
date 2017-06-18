@@ -2,13 +2,19 @@
 ;; the web page is rendert in this part
 (ns upload_validate_java.layout
   (:require [selmer.parser :as parser]
+            [selmer.filters :as filters]
             [clojure.string :as s]
             [ring.util.response :refer [content-type response]]
             [compojure.response :refer [Renderable]]
             [environ.core :refer [env]]
             [ring.util.anti-forgery :refer [anti-forgery-field]]))
 
+
+           (filters/add-filter! :key key)
+(filters/add-filter! :val val)
 (parser/add-tag! :csrf-field (fn [_ _] (anti-forgery-field)))
+
+
 (def template-path "templates/")
 
 (deftype RenderableTemplate [template params]
@@ -22,6 +28,7 @@
                   (if-let [context (:servlet-context request)]
                     (try (.getContextPath context)
                          (catch IllegalArgumentException _ context))))
+
         (parser/render-file (str template-path template))
 
         response)
