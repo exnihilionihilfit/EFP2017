@@ -56,7 +56,7 @@
 
 (defn get_config [args]
   ""
-  ( merge (config)  (dissoc args :__anti-forgery-token)))
+    (dissoc args :__anti-forgery-token))
 
 (defn extractPOSTMessage [args]
   "x is the type field of the json object entry. "

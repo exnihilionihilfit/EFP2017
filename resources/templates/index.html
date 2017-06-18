@@ -78,34 +78,11 @@
 
         <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
 
-        {% for rule in config.items %}
-
-          <p>
-           {% for field in rule %}
-
-
-
-            <ul class="results">{{ field.1}}
-            <input class="btn" id="{{field.0}}"
-                   name="{{rule.0}}.{{field.0}}"
-                   type="text"
-                   value="{{field.1}}"
-                   /></ul>
-
-                {% endfor %}
-          </p>
-
-
-
-          {% endfor %}
-
-
-
           {% for item in config.items %}
 
 
           {% csrf-field %}
-
+          <p>{{ item.items }}</p>
           <ul class="results">   {{ item.type}}
 
 
