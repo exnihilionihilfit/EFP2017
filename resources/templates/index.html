@@ -6,7 +6,6 @@
         <title>Validator</title>
 
         <!-- styles -->
-        {% style "/assets/bootstrap/css/bootstrap.min.css" %}
         {% style "/assets/font-awesome/css/font-awesome.min.css" %}
         {% style "/css/screen.css" %}
         {% style "/css/bootstrap.css" %}
@@ -51,12 +50,18 @@
           <div class="jumbotron" id="content">
             <p style="color:#999999">
 
-          {% if date %}
-          This is a file validator written with clojure. With this validator a file could be uploaded and tested. The tests could be
-          specified in a seperate json file. Each test consists of a pattern and a respons for success and failure. Each test could be
-          configurated by using the app itself.
+              {% if default %}
+              This is a basic validator for java files. <br>
+              Only for: <br>
+              <li>Name: FileServer</li>
+              <li>Type: .java</li>
+              <li>Package: var.mom.jms.file </li>
+              <li> With entry point: public static void main(String[] args)</li>
+              {% endif %}
 
-          This application is compield into java byte-code and packed as a jar file and could be accessed with a browser (IP-Adress + Port 3000 e.g. http://127.0.0.1:3000)
+              {% if date %}
+              We have {{date}}
+              {% endif %}
 
               {% if upload %}
             <form class="upload" action="/upload" enctype="multipart/form-data" method="POST">
@@ -75,49 +80,35 @@
             {% endif %}
 
             {% if edit_config %}
-            <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
+             <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
+               {% csrf-field %}
 
               <div class="row">
 
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                  <h2>Example body text</h2>
+                  <h2>Configuration</h2>
                   <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
                 </div>
 
-                {% for item in config.items %}
-                {% csrf-field %}
+                {% for rule in config.items %}
 
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <h4>
-                    {{ item.type}}:
-                    {{ item.name}}
+                    {{ rule.type |remove \":\"}}:
                   </h4>
                   <div id="configInputContainer">
 
-                    <input class="form-control input-sm" id="{{item.type}}"
-                           name="{{item.type}}"
-                           type="text"
-                           value="{{item.name}}"
-                           />
-                    <input class="form-control input-sm" id="{{item.type}}"
-                           name="{{item.type}}"
-                           type="text"
-                           value="{{item.use}}"
-                           />
-                    <input class="form-control input-sm" id="{{item.type}}"
-                           name="{{item.type}}"
-                           type="text"
-                           value="{{item.fail}}"
-                           />
-                    <input class="form-control input-sm" id="{{item.type}}"
-                           name="{{item.type}}"
-                           type="text"
-                           value="{{item.success}}"
-                           />
+                    {% for field in rule %}
+                    {{ field.0}}
+                       <input class="form-control input-sm" id="{{field.0}}"
+                              name="{{rule.type}}"
+                                type="text"
+                              value="{{field.1}}"
+                              />
+                    {% endfor %}
                   </div>
                   <br><br>
                 </div>
-
                 {% endfor %}
 
               </div>
@@ -125,6 +116,9 @@
               <button class="btn btn-primary pull-left" type="submit" value="save"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save...</button>
 
             </form>
+
+
+
 
 
             {% endif %}
@@ -166,4 +160,4 @@
         {% script "/assets/jquery/jquery.min.js" %}
         {% script "/assets/bootstrap/js/bootstrap.min.js" %}
       </body>
-      </html>
+</html>

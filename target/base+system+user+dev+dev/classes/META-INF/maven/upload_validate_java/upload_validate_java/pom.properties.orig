@@ -1,0 +1,14 @@
+<<<<<<< HEAD
+#Leiningen
+#Sun Jun 18 18:48:48 CEST 2017
+version=0.1.0-SNAPSHOT
+revision=5b6bb110f58b0ecffb86eaf1b1b1337f8a0a574c\n
+groupId=upload_validate_java
+artifactId=upload_validate_java
+=======
+#Leiningen
+#Sun Jun 18 20:35:45 CEST 2017
+version=0.1.0-SNAPSHOT
+groupId=upload_validate_java
+artifactId=upload_validate_java
+>>>>>>> 2175f94643f7a61694b9da635abdbf446069a06d
