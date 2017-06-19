@@ -21,7 +21,7 @@
 (def resource-path "/tmp/")
 
 ;; used to aggregate valid checkpoints of uploaded file
-(def validCheckpoints 0)
+(def validCheckpoints 20)
 
 
 (defn getText [file resource-path]
@@ -80,13 +80,13 @@
   (.exists (clojure.java.io/as-file (str resource-path (:filename file)))))
 
 
-(defn validateAll [file resource-path]
+(defn validateAll [file resource-path validPercentage]
   "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run
   It returns a string with all messages of success and failure"
-    (concat  (if(validateFileName file)
-               (do
-                 (+ validCheckpoints 1)
-                 (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-name" (get (config) :items)) :success) "success")))
+    (hash-map :validationMessages
+             (concat  (if(validateFileName file)
+                        (do (+ validCheckpoints 10)
+               (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-name" (get (config) :items)) :success) "success")))
                (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-name" (get (config) :items)) :fail) "fail")))
 
              (if(validateFileType file)
@@ -107,12 +107,7 @@
                     (conj validationMessage (formatValidationMessage "file upload failed" "fail")))
 
                  ))
-             )
-)
-
-(defn calculateValidPercentage []
-  "Calculates the valid percentage of an uploaded file. Returns a String as percentage"
-  (str (format "%.2f" (float (* (/ validCheckpoints 6) 100))) "%")
+             ) :validPercentage (str (format "%.2f" (float (* (/ validCheckpoints 6) 100))) "%"))
 )
 
 
