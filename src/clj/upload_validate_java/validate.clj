@@ -20,6 +20,8 @@
 ;; uploaded file to validate dir
 (def resource-path "/tmp/")
 
+;; used to aggregate valid checkpoints of uploaded file
+(def validCheckpoints 0)
 
 
 (defn getText [file resource-path]
@@ -38,6 +40,12 @@
   "To get a matching pattern uses java regex"
   (re-pattern(java.util.regex.Pattern/quote string)))
 
+(defn formatValidationMessage [string status]
+  "Concat Validation Message with HTML Tags"
+  (if(= status "success")
+    (str string "<span> <i class='fa fa-check'></i></span>")
+    (str string "<span> <i class='fa fa-times'></i></span>"))
+)
 
 (defn splitFileIntoNameAndType [file]
   "seperate the file name into name and type e.g. test.java --> (\"test\" , \"java\")"
@@ -67,39 +75,44 @@
   (boolean (re-find (createRegExFromString (removeAllWhiteSpaces (get (getConfigProperty "entryPoint" (get (config) :items)) :name)))
                     (removeAllWhiteSpaces (getText file resource-path)))))
 
-(defn validateFileExsits [file resource-path]
+(defn validateFileExists [file resource-path]
   "After the upload of the file. This function checks if the file is realy there"
   (.exists (clojure.java.io/as-file (str resource-path (:filename file)))))
+
 
 (defn validateAll [file resource-path]
   "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run
   It returns a string with all messages of success and failure"
     (concat  (if(validateFileName file)
-               (conj validationMessage  (get (getConfigProperty "file-name" (get (config) :items)) :success))
-               (conj validationMessage  (get (getConfigProperty "file-name" (get (config) :items)) :fail)))
+               (do
+                 (+ validCheckpoints 1)
+                 (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-name" (get (config) :items)) :success) "success")))
+               (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-name" (get (config) :items)) :fail) "fail")))
 
              (if(validateFileType file)
-               (conj validationMessage  (get (getConfigProperty "file-type" (get (config) :items)) :success))
-               (conj validationMessage  (get (getConfigProperty "file-type" (get (config) :items)) :fail)))
+               (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-type" (get (config) :items)) :success) "success"))
+               (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-type" (get (config) :items)) :fail) "fail")))
 
              (if(and (validateFileName file)(validateFileType file) )
                (concat
-                  (io/upload-file resource-path file)
-
-                  (if (validateFileExsits file resource-path)
-                    (concat (conj validationMessage  "file upload successfull")
+                  (if (validateFileExists file resource-path)
+                    (concat (conj validationMessage  (formatValidationMessage "file upload successfull" "success"))
                             (if (validatePackageName file resource-path)
-                              (conj validationMessage  (get (getConfigProperty "packageName" (get (config) :items)) :success))
-                              (conj validationMessage  (get (getConfigProperty "packageName" (get (config) :items)) :fail)))
+                              (conj validationMessage  (formatValidationMessage (get (getConfigProperty "packageName" (get (config) :items)) :success) "success"))
+                              (conj validationMessage  (formatValidationMessage (get (getConfigProperty "packageName" (get (config) :items)) :fail) "fail")))
                             (if (validateContainsMainFunction file resource-path)
-                                (conj validationMessage (get (getConfigProperty "entryPoint" (get (config) :items)) :success))
-                                (conj validationMessage (get (getConfigProperty "entryPoint" (get (config) :items)) :fail)))
+                              (conj validationMessage  (formatValidationMessage (get (getConfigProperty "entryPoint" (get (config) :items)) :success) "success"))
+                              (conj validationMessage  (formatValidationMessage (get (getConfigProperty "entryPoint" (get (config) :items)) :fail) "fail")))
                     )
-                    (conj validationMessage "file upload failed"))
+                    (conj validationMessage (formatValidationMessage "file upload failed" "fail")))
 
                  ))
              )
 )
 
+(defn calculateValidPercentage []
+  "Calculates the valid percentage of an uploaded file. Returns a String as percentage"
+  (str (format "%.2f" (float (* (/ validCheckpoints 6) 100))) "%")
+)
 
 

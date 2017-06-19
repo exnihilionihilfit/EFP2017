@@ -80,8 +80,7 @@
             {% endif %}
 
             {% if edit_config %}
-             <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
-               {% csrf-field %}
+            <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
 
               <div class="row">
 
@@ -90,25 +89,40 @@
                   <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
                 </div>
 
-                {% for rule in config.items %}
+                {% for item in config.items %}
+                {% csrf-field %}
 
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <h4>
-                    {{ rule.type |remove \":\"}}:
+                    {{ item.type}}:
+                    {{ item.name}}
                   </h4>
                   <div id="configInputContainer">
 
-                    {% for field in rule %}
-                    {{ field.0}}
-                       <input class="form-control input-sm" id="{{field.0}}"
-                              name="{{rule.type}}"
-                                type="text"
-                              value="{{field.1}}"
-                              />
-                    {% endfor %}
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.name}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.use}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.fail}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.success}}"
+                           />
                   </div>
                   <br><br>
                 </div>
+
                 {% endfor %}
 
               </div>
@@ -116,9 +130,6 @@
               <button class="btn btn-primary pull-left" type="submit" value="save"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save...</button>
 
             </form>
-
-
-
 
 
             {% endif %}
@@ -140,14 +151,17 @@
             {% if validate %}
             <b><i class="fa fa-clipboard"></i> Validation result:</b>
 
+            <br>
+
             <div class="col-lg-6 col-md-6 col-xs-6">
+              Validity: {{validPercentage}}
               <div class="progress">
                 <div class="progress-bar progress-bar-success" style="width: 75%"></div>
               </div>
 
               <ul>
                 {% for item in items %}
-                <li style="text-transform:uppercase"> {{item|safe}} </li>
+                <li style="text-transform:uppercase">{{item|safe}} </li>
                 {% endfor %}
               </ul>
             </div>
@@ -160,4 +174,4 @@
         {% script "/assets/jquery/jquery.min.js" %}
         {% script "/assets/bootstrap/js/bootstrap.min.js" %}
       </body>
-</html>
+      </html>
