@@ -104,3 +104,8 @@
                  )
              )
 )
+
+(defn validationPercentage[file resource-path]
+ (* ( /
+   (get  (validateAll file resource-path) :numberOfValid) (get  (validateAll file resource-path) :totalValidations)
+    ) 100))

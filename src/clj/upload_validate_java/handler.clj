@@ -33,7 +33,7 @@
 
 
   (POST "/upload" [file]
-        (layout/render "index.html" {:items (validateAll file resource-path) :validate "true"}));;layout/render "validation.html"
+        (layout/render "index.html" {:items (validateAll file resource-path) :validationPercentage (validationPercentage file resource-path) :validate "true"}));;layout/render "validation.html"
 
   (GET "/files/:filename" [filename]
        (file-response (str resource-path filename))))
