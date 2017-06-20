@@ -59,3 +59,8 @@ button{
 #configInputContainer input{
   margin-bottom: 5px;
 }
+
+.progress-bar {
+    -webkit-transition: width 2.5s ease;
+    transition: width 2.5s ease;
+}
