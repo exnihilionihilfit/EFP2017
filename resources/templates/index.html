@@ -118,9 +118,6 @@
             </form>
 
 
-
-
-
             {% endif %}
 
             {% if save_file %}
@@ -139,9 +136,11 @@
                 <div class="progress-bar progress-bar-success" style="width: 75%"></div>
               </div>
 
+              {{items}}
+
               <ul>
                 {% for item in items %}
-                <li style="text-transform:uppercase"> {{item|safe}} </li>
+                <li style="text-transform:uppercase"> {{item}} </li>
                 {% endfor %}
               </ul>
             </div>

@@ -17,11 +17,9 @@
 (def text '())
 (def validationMessage '())
 
+
 ;; uploaded file to validate dir
 (def resource-path "/tmp/")
-
-;; used to aggregate valid checkpoints of uploaded file
-(def validCheckpoints 0)
 
 
 (defn getText [file resource-path]
@@ -79,47 +77,30 @@
   "After the upload of the file. This function checks if the file is realy there"
   (.exists (clojure.java.io/as-file (str resource-path (:filename file)))))
 
-
 (defn validateAll [file resource-path]
   "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run
   It returns a string with all messages of success and failure"
-  {
-    :validationMessages (get { :getValidationMessages
-            (concat  (if(validateFileName file)
-                       (do
-                         (+ validCheckpoints 1)
-                         (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-name" (get (config) :items)) :success) "success")))
-                       (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-name" (get (config) :items)) :fail) "fail")))
+    (merge {:totalValidations 4} (if(validateFileName file);; hard code should be dynamic by number of validations !
+               (hash-map :fileName (get (getConfigProperty "file-name" (get (config) :items)) :success), :numberOfValid 1)
+               (hash-map :fileName  (get (getConfigProperty "file-name" (get (config) :items)) :fail)))
 
-                     (if(validateFileType file)
-                       (do
-                         (+ validCheckpoints 1)
-                         (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-type" (get (config) :items)) :success) "success")))
-                       (conj validationMessage  (formatValidationMessage (get (getConfigProperty "file-type" (get (config) :items)) :fail) "fail")))
+             (if(validateFileType file)
+               (hash-map :fileType(get (getConfigProperty "file-type" (get (config) :items)) :success) , :numberOfValid 2)
+               (hash-map :fileType (get (getConfigProperty "file-type" (get (config) :items)) :fail)))
 
-                     (if(and (validateFileName file)(validateFileType file) )
-                       (concat
-                         (if (validateFileExists file resource-path)
-                           (do
-                             (+ validCheckpoints 1)
-                             (concat (conj validationMessage  (formatValidationMessage "file upload successfull" "success")))
-                                   (if (validatePackageName file resource-path)
-                                     (do
-                                       (+ validCheckpoints 1)
-                                       (conj validationMessage  (formatValidationMessage (get (getConfigProperty "packageName" (get (config) :items)) :success) "success")))
-                                     (conj validationMessage  (formatValidationMessage (get (getConfigProperty "packageName" (get (config) :items)) :fail) "fail")))
-                                   (if (validateContainsMainFunction file resource-path)
-                                     (do
-                                       (+ validCheckpoints 1)
-                                       (conj validationMessage  (formatValidationMessage (get (getConfigProperty "entryPoint" (get (config) :items)) :success) "success")))
-                                     (conj validationMessage  (formatValidationMessage (get (getConfigProperty "entryPoint" (get (config) :items)) :fail) "fail")))
-                                   )
-                           (conj validationMessage (formatValidationMessage "file upload failed" "fail")))
+             (if(and (validateFileName file)(validateFileType file) )
 
-                         ))
-                     )} :getValidationMessages )
+                  (if (validateFileExists  file resource-path)
+                    (merge (hash-map :fileExsits  "file upload successfull")
+                            (if (validatePackageName file resource-path)
+                              (hash-map :packageName  (get (getConfigProperty "packageName" (get (config) :items)) :success) , :numberOfValid 3)
+                              (hash-map :packageName   (get (getConfigProperty "packageName" (get (config) :items)) :fail)))
+                            (if (validateContainsMainFunction file resource-path)
+                                (hash-map :entryPoint (get (getConfigProperty "entryPoint" (get (config) :items)) :success) , :numberOfValid 4)
+                                (hash-map :entryPoint (get (getConfigProperty "entryPoint" (get (config) :items)) :fail)))
+                    )
+                    (hash-map :fileExsits "file upload failed"))
 
-     :validPercentage ((get { :getValidPercentages #(str (format "%.2f" (float (* (/ validCheckpoints %) 100))) "%" )} :getValidPercentages) 6)
-  })
-
-
+                 )
+             )
+)
