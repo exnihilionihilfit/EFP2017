@@ -22,13 +22,18 @@
   "get a lazy-sequenz and convert it to a map. Only used with extractConfigProperty"
   (into {} (extractConfigProperty propertyType configMap)))
 
+;; regex
+
+(defn removeColon [string]
+  (clojure.string/replace string #":" ""))
+
 ;; read/write config file
 
 (def adress "config/config.json")
 
 (defn json_write [string]
   "Converts a string into json formated string"
-  (json/write-str string :key-fn name) )
+  (json/write-str string :key-fn name))
 
 (defn json_read [string]
   "Converts a json formated string into a map"
@@ -52,19 +57,21 @@
 
 (defn save_config [args]
   "merge the loaded and via web interface new added values (remove also with post send :__anti-forgery-token)"
-  (writeJsonConfigFile adress ( config) ))
+  (writeJsonConfigFile adress (config) ))
+
+
+
 
 
 (defn extractPOSTMessage [args]
-  "x is the type field of the json object entry. "
-  (for [x args]   ( str (getConfigProperty "file-type" (get (config) :items))  )))
-
-
+  "x is the type field of the json object entry. Get the key from x remove the colon and search for the entry in
+  the config file. Then replace the entry with the new value."
+  (for [x args]
+    ( str (getConfigProperty (removeColon (str (get x 0))) (get (config) :items))  )))
 
 
 (defn get_config [args]
   ""
     (extractPOSTMessage(dissoc args :__anti-forgery-token)))
-
 
 
