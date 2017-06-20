@@ -20,13 +20,13 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                   <span class="sr-only">Toggle navigation</span>
                 </button>
-                <a class="navbar-brand" href="#">Java Validator</a>
+                <a class="navbar-brand" href="/">Java Validator</a>
               </div>
 
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                   <li>
-                    <a href="/upload">File Upload</a>
+                    <a href="/upload"><i class="fa fa-upload"></i> File Upload</a>
                   </li>
 
                   <li>
@@ -80,8 +80,7 @@
             {% endif %}
 
             {% if edit_config %}
-             <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
-               {% csrf-field %}
+            <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
 
               <div class="row">
 
@@ -90,25 +89,40 @@
                   <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
                 </div>
 
-                {% for rule in config.items %}
+                {% for item in config.items %}
+                {% csrf-field %}
 
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <h4>
-                    {{ rule.type |remove \":\"}}:
+                    {{ item.type}}:
+                    {{ item.name}}
                   </h4>
                   <div id="configInputContainer">
 
-                    {% for field in rule %}
-                    {{ field.0}}
-                       <input class="form-control input-sm" id="{{field.0}}"
-                              name="{{rule.type}}"
-                                type="text"
-                              value="{{field.1}}"
-                              />
-                    {% endfor %}
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.name}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.use}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.fail}}"
+                           />
+                    <input class="form-control input-sm" id="{{item.type}}"
+                           name="{{item.type}}"
+                           type="text"
+                           value="{{item.success}}"
+                           />
                   </div>
                   <br><br>
                 </div>
+
                 {% endfor %}
 
               </div>
@@ -116,9 +130,6 @@
               <button class="btn btn-primary pull-left" type="submit" value="save"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save...</button>
 
             </form>
-
-
-
 
 
             {% endif %}
@@ -140,17 +151,26 @@
             {% if validate %}
             <b><i class="fa fa-clipboard"></i> Validation result:</b>
 
-            <div class="col-lg-6 col-md-6 col-xs-6">
+            <div style="padding-left:0" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+              Validity: {{items.validPercentage}}
               <div class="progress">
-                <div class="progress-bar progress-bar-success" style="width: 75%"></div>
+                <div style="width:75%" class="progress-bar progress-bar-success"></div>
               </div>
 
               <ul>
-                {% for item in items %}
-                <li style="text-transform:uppercase"> {{item|safe}} </li>
+
+                {% for item in items.validationMessages %}
+                <li style="text-transform:uppercase">{{item|safe}} </li>
                 {% endfor %}
               </ul>
+
+              <br><br>
+
+              <a class="btn btn-primary pull-left" href="/upload"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
+
             </div>
+
             {% endif %}
 
             </p>
@@ -159,5 +179,6 @@
         {% script "/assets/tether/dist/js/tether.min.js" %}
         {% script "/assets/jquery/jquery.min.js" %}
         {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+
       </body>
-</html>
+      </html>
