@@ -101,7 +101,7 @@
                     {% for field in rule %}
                     {{ field.0}}
                        <input class="form-control input-sm" id="{{field.0}}"
-                              name="{{rule.type}}"
+                              name="{{rule.type}}{{field.0}}"
                                 type="text"
                               value="{{field.1}}"
                               />

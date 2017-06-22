@@ -69,7 +69,7 @@
   (for [x args]
     ( str (getConfigProperty (removeColon (str (get x 0))) (get (config) :items))  )))
 
-
+;;(doseq [[k v] args] (str k v))
 (defn get_config [args]
   ""
     (extractPOSTMessage(dissoc args :__anti-forgery-token)))
