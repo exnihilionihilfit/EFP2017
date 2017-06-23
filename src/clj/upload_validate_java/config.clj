@@ -24,8 +24,8 @@
 
 ;; regex
 
-(defn removeColon [string]
-  (clojure.string/replace string #":" ""))
+(defn splitKeys [string]
+  (split string #"\:" ))
 
 ;; read/write config file
 
@@ -60,14 +60,23 @@
   (writeJsonConfigFile adress (config) ))
 
 
-
-
-
 (defn extractPOSTMessage [args]
   "x is the type field of the json object entry. Get the key from x remove the colon and search for the entry in
   the config file. Then replace the entry with the new value."
   (for [x args]
-    ( str (getConfigProperty (removeColon (str (get x 0))) (get (config) :items))  )))
+    (let[itemKey (  splitKeys (str (get x 0)))]
+
+       ( for[y (getConfigProperty (get itemKey  0) (get (config) :items))]
+       (str  (get itemKey 1))
+         )
+      )
+    )
+  )
+;; iterate over each form entry send via post message
+;; get primary key (get (  splitKeys (str (get x 0)))  0)
+;; get config item with this key
+;; iterate over each item field and change to new value
+;; save the changes
 
 ;;(doseq [[k v] args] (str k v))
 (defn get_config [args]
