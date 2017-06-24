@@ -66,9 +66,9 @@
   (for [x args]
     (let[itemKey (  splitKeys (str (get x 0)))]
 
-       ( for[y (getConfigProperty (get itemKey  0) (get (config) :items))]
-       (str  (get itemKey 1))
-         )
+
+       (merge {} (assoc (getConfigProperty (get itemKey  0) (get (config) :items)) (keyword (get itemKey 1)) (val x))) ;;(get itemKey 1)
+
       )
     )
   )
