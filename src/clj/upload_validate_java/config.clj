@@ -37,12 +37,13 @@
 
 (defn updateConfigProperty [entry newEntries]
   "iterate over a vector of maps and return the one who contains the propertyType (String) as lazy-sequenz"
-  (
-    for [newEntry newEntries]
+  (into {}
+    (for [newEntry newEntries]
      (let[itemKey (  splitKeys (str (get newEntry 0)))]
        (if( =  (get itemKey 0) (get entry :type))
-       (assoc entry (keyword (get itemKey 1)) (val newEntry))
-       ))  ))
+       (merge {} (hash-map (keyword (get itemKey 1)) (val newEntry)))
+         (merge {} {})
+       )) ) ))
 
 
 ;;  (if( = (keyword (get itemKey 0)) (get entry :type))
