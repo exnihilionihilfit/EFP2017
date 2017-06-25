@@ -22,6 +22,21 @@
   "get a lazy-sequenz and convert it to a map. Only used with extractConfigProperty"
   (into {} (extractConfigProperty propertyType configMap)))
 
+
+(def counter (atom -1))
+
+(defn next-value []
+  "increments the counter"
+(swap! counter inc))
+
+(defn replaceConfigProperty [propertyType configMap configEntry]
+  "iterate over a vector of maps and return the one who contains the propertyType (String) as lazy-sequenz"
+  (  for [x configMap]
+     (if( = (get x :type) propertyType)
+       (merge {} (assoc configMap (next-value) configEntry ))
+       (println "error"))))
+
+
 ;; regex
 
 (defn splitKeys [string]
@@ -63,15 +78,20 @@
 (defn extractPOSTMessage [args]
   "x is the type field of the json object entry. Get the key from x remove the colon and search for the entry in
   the config file. Then replace the entry with the new value."
-  (for [x args]
+  (let [configEntry (get (config) :items)](
+    for [x args]
     (let[itemKey (  splitKeys (str (get x 0)))]
 
 
-       (merge {} (assoc (getConfigProperty (get itemKey  0) (get (config) :items)) (keyword (get itemKey 1)) (val x))) ;;(get itemKey 1)
+       (replaceConfigProperty (keyword(get itemKey 1))  (assoc (getConfigProperty (get itemKey  0) configEntry) (keyword (get itemKey 1)) (val x)) configEntry) ;;(get itemKey 1)
 
       )
+     )
     )
   )
+
+;;(replaceConfigProperty "bob" [{:type "bob"}{:name "fritz"}] {:type "karl"})
+
 ;; iterate over each form entry send via post message
 ;; get primary key (get (  splitKeys (str (get x 0)))  0)
 ;; get config item with this key
