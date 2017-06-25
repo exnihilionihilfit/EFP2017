@@ -42,7 +42,7 @@
      (let[itemKey (  splitKeys (str (get newEntry 0)))]
        (if( =  (get itemKey 0) (get entry :type))
        (merge {} (hash-map (keyword (get itemKey 1)) (val newEntry)))
-         (merge {} {})
+
        )) ) ))
 
 
@@ -85,20 +85,21 @@
   "Reads the config files resource/config/config.json by default. Converts it into a map"
   (json_read (readJsonConfigFile adress)))
 
-(defn save_config [args]
-  "merge the loaded and via web interface new added values (remove also with post send :__anti-forgery-token)"
-  (writeJsonConfigFile adress (config) ))
 
 
 (defn extractPOSTMessage [newEntries]
   "x is the type field of the json object entry. Get the key from x remove the colon and search for the entry in
   the config file. Then replace the entry with the new value."
   (let [configEntries (get (config) :items)](
-    for [entry configEntries]
-    (updateConfigProperty entry newEntries)
-     )
+       hash-map :items
+    ( for [entry configEntries] (updateConfigProperty entry newEntries) )
     )
   )
+  )
+
+(defn save_config [newEntries]
+  "merge the loaded and via web interface new added values (remove also with post send :__anti-forgery-token)"
+  (writeJsonConfigFile adress (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)) ))
 
 
 ;; iterate over each form entry send via post message
@@ -108,8 +109,8 @@
 ;; save the changes
 
 ;;(doseq [[k v] args] (str k v))
-(defn get_config [args]
+(defn get_config [newEntries]
   ""
-    (extractPOSTMessage(dissoc args :__anti-forgery-token)))
+    (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)))
 
 
