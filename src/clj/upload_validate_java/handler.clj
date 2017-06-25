@@ -23,13 +23,13 @@
        (layout/render "index.html" {:upload "true"}))
 
   (GET "/edit_config" []
-        (selmer.filters/add-filter! :key key)
+       (selmer.filters/add-filter! :key key)
        (selmer.filters/add-filter! :val val)
        (layout/render "index.html" {:edit_config "true" :config (config)} true))
 
 
   (POST "/save_config" [& args]
-        (layout/render "index.html" {:items (get_config args) :save_file "true" :do_save (save_config args) }))
+        (layout/render "index.html" {:config (get_config args) :edit_config "true"  :do_save (save_config args) }))
 
 
   (POST "/upload" [file]
