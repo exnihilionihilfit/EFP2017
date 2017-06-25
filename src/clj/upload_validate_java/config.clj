@@ -29,18 +29,32 @@
   "increments the counter"
 (swap! counter inc))
 
-(defn replaceConfigProperty [propertyType configMap configEntry]
-  "iterate over a vector of maps and return the one who contains the propertyType (String) as lazy-sequenz"
-  (  for [x configMap]
-     (if( = (get x :type) propertyType)
-       (merge {} (assoc configMap (next-value) configEntry ))
-       (println "error"))))
-
 
 ;; regex
 
 (defn splitKeys [string]
   (split string #"\:" ))
+
+(defn updateConfigProperty [entry newEntries]
+  "iterate over a vector of maps and return the one who contains the propertyType (String) as lazy-sequenz"
+  (
+    for [newEntry newEntries]
+     (let[itemKey (  splitKeys (str (get newEntry 0)))]
+       (if( =  (get itemKey 0) (get entry :type))
+       (assoc entry (keyword (get itemKey 1)) (val newEntry))
+       ))  ))
+
+
+;;  (if( = (keyword (get itemKey 0)) (get entry :type))
+ ;;      (assoc entry (keyword (get itemKey 1)) (val newEntry) )
+;;
+
+;;let[itemKey (  splitKeys (str (get x 0)))]
+  ;;     (replaceConfigProperty (keyword(get itemKey 1))  (assoc (getConfigProperty (get itemKey  0) configEntry) (keyword (get itemKey 1)) (val x)) configEntry) ;;(get itemKey 1)
+
+;;(replaceConfigProperty "bob" [{:type "bob"}{:name "fritz"}] {:type "karl"})
+
+
 
 ;; read/write config file
 
@@ -75,22 +89,16 @@
   (writeJsonConfigFile adress (config) ))
 
 
-(defn extractPOSTMessage [args]
+(defn extractPOSTMessage [newEntries]
   "x is the type field of the json object entry. Get the key from x remove the colon and search for the entry in
   the config file. Then replace the entry with the new value."
-  (let [configEntry (get (config) :items)](
-    for [x args]
-    (let[itemKey (  splitKeys (str (get x 0)))]
-
-
-       (replaceConfigProperty (keyword(get itemKey 1))  (assoc (getConfigProperty (get itemKey  0) configEntry) (keyword (get itemKey 1)) (val x)) configEntry) ;;(get itemKey 1)
-
-      )
+  (let [configEntries (get (config) :items)](
+    for [entry configEntries]
+    (updateConfigProperty entry newEntries)
      )
     )
   )
 
-;;(replaceConfigProperty "bob" [{:type "bob"}{:name "fritz"}] {:type "karl"})
 
 ;; iterate over each form entry send via post message
 ;; get primary key (get (  splitKeys (str (get x 0)))  0)
