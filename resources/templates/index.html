@@ -138,8 +138,16 @@
 
 
               <ul>
+
+
                 {% for item in items %}
-                <li style="text-transform:uppercase"> {{item}} </li>
+                <li style="text-transform:uppercase">
+
+
+                  {{item|val}}
+                </li>
+
+
                 {% endfor %}
               </ul>
             </div>
