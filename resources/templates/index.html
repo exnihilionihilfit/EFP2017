@@ -118,7 +118,7 @@
                   </h4>
                   <div id="configInputContainer">
 
-                    {% for field in rule %}
+                    {% for field in rule |sort-by:name %}
 
                     {{ field.0|deleteColon}}
                     <input class="form-control input-sm" id="{{field.0}}"
