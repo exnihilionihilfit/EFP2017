@@ -25,20 +25,20 @@
 
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                  <li>
+                  <li id="upload">
                     <a href="/upload"><i class="fa fa-upload"></i> File Upload</a>
                   </li>
 
-                  <li>
+                  <li id="edit_config">
                     <a href="/edit_config"><i class="fa fa-cog"></i> Edit Config</a>
                   </li>
 
-                  <li>
+                  <li id="#">
                     <a href="#"><i class="fa fa-download"></i> Download Result</a>
                   </li>
 
-                  <li>
-                    <a href="/date"><i class="fa fa-info-circle"></i> About</a>
+                  <li id="about">
+                    <a href="/about"><i class="fa fa-info-circle"></i> About</a>
                   </li>
                 </ul>
               </div>
@@ -172,5 +172,6 @@
         {% script "/assets/tether/dist/js/tether.min.js" %}
         {% script "/assets/jquery/jquery.min.js" %}
         {% script "/assets/bootstrap/js/bootstrap.min.js" %}
+        {% script "/js/script.js" %}
       </body>
       </html>

@@ -23,7 +23,7 @@
   (GET "/" []
        (layout/render "index.html" {:default "true"}))
 
-  (GET "/date" []
+  (GET "/about" []
        (layout/render "index.html" {:about "true"}))
 
   (GET "/upload" []
