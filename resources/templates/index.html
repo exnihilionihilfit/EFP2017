@@ -70,7 +70,7 @@
 
                   <label class="btn btn-default btn-file pull-left">
                     <i class="fa fa-folder-open-o"></i> Choose File...
-                    <input style="display:none" id="file" name="file" type="file" onchange="$('#fileName').val($(this).val())">
+                    <input style="display:none" id="file" name="file" type="file" onchange="$('#fileName').val($(this).val().split('\\').pop())">
                   </label>
 
                   <button class="btn btn-primary pull-left" style="margin-left: 10px" type="submit" ><i class="fa fa-upload" aria-hidden="true"></i> Upload...</button>
