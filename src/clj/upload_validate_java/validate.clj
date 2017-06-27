@@ -17,6 +17,12 @@
 (def text '())
 (def validationMessage '())
 
+;; counter
+(def counter (atom -1))
+
+(defn next-value []
+  "increments the counter"
+(swap! counter inc))
 
 ;; uploaded file to validate dir
 (def resource-path "/tmp/")
@@ -62,10 +68,14 @@
 
 (defn validatePackageName [file resource-path]
   "The package name / namespace get checked this should be the first statement"
-  (and (= (str (first(split (first (textAsLines file resource-path )) #" ")))(get (getConfigProperty "package" (get (config) :items)) :name))
-       (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get (getConfigProperty "packageName" (get (config) :items)) :name) ))
+
+       (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get (getConfigProperty "packageName" (get (config) :items)) :name) )
   )
 
+(defn validatePackage [file resource-path]
+  "The package name / namespace get checked this should be the first statement"
+ (= (str (first(split (first (textAsLines file resource-path )) #" ")))(get (getConfigProperty "package" (get (config) :items)) :name))
+)
 
 ;;entry point check
 (defn validateContainsMainFunction [file resource-path]
@@ -80,23 +90,27 @@
 (defn validateAll [file resource-path]
   "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run
   It returns a string with all messages of success and failure"
-    (merge {:totalValidations 4} (if(validateFileName file);; hard code should be dynamic by number of validations !
-               (hash-map :fileName (get (getConfigProperty "file-name" (get (config) :items)) :success), :numberOfValid 1)
+    (merge {:totalValidations (-  (count (get (config) :items)) (reset! counter 0) 1)}
+           (if(validateFileName file)
+               (hash-map :fileName (get (getConfigProperty "file-name" (get (config) :items)) :success), :numberOfValid (next-value))
                (hash-map :fileName  (get (getConfigProperty "file-name" (get (config) :items)) :fail)))
 
              (if(validateFileType file)
-               (hash-map :fileType(get (getConfigProperty "file-type" (get (config) :items)) :success) , :numberOfValid 2)
+               (hash-map :fileType(get (getConfigProperty "file-type" (get (config) :items)) :success) , :numberOfValid (next-value))
                (hash-map :fileType (get (getConfigProperty "file-type" (get (config) :items)) :fail)))
 
              (if(and (validateFileName file)(validateFileType file) )
 
                   (if (validateFileExists  file resource-path)
                     (merge (hash-map :fileExsits  "file upload successfull")
+                            (if (validatePackage file resource-path)
+                              (hash-map :package  (get (getConfigProperty "package" (get (config) :items)) :success) , :numberOfValid (next-value))
+                              (hash-map :package   (get (getConfigProperty "package" (get (config) :items)) :fail)))
                             (if (validatePackageName file resource-path)
-                              (hash-map :packageName  (get (getConfigProperty "packageName" (get (config) :items)) :success) , :numberOfValid 3)
+                              (hash-map :packageName  (get (getConfigProperty "packageName" (get (config) :items)) :success) , :numberOfValid (next-value))
                               (hash-map :packageName   (get (getConfigProperty "packageName" (get (config) :items)) :fail)))
                             (if (validateContainsMainFunction file resource-path)
-                                (hash-map :entryPoint (get (getConfigProperty "entryPoint" (get (config) :items)) :success) , :numberOfValid 4)
+                                (hash-map :entryPoint (get (getConfigProperty "entryPoint" (get (config) :items)) :success) , :numberOfValid (next-value))
                                 (hash-map :entryPoint (get (getConfigProperty "entryPoint" (get (config) :items)) :fail)))
                     )
                     (hash-map :fileExsits "file upload failed"))
@@ -105,7 +119,9 @@
              )
 )
 
-(defn validationPercentage[file resource-path]
- (* ( /
-   (get  (validateAll file resource-path) :numberOfValid) (get  (validateAll file resource-path) :totalValidations)
-    ) 100))
+(defn validationPercentage[validation]
+ (* ( /  (get  validation :numberOfValid) (get  validation :totalValidations)) 100))
+
+(defn filterValidateAll[validation]
+  "To filter out the validation counters and total count for display onto html page"
+  (dissoc validation :numberOfValid :totalValidations))

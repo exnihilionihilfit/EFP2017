@@ -1,0 +1,2 @@
+2017-06-27 10:22:51,341 [main] INFO  org.eclipse.jetty.server.Server - jetty-7.x.y-SNAPSHOT 
+2017-06-27 10:22:51,520 [main] INFO  o.e.jetty.server.AbstractConnector - Started SelectChannelConnector@0.0.0.0:3000 

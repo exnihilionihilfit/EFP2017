@@ -23,17 +23,17 @@
   (into {} (extractConfigProperty propertyType configMap)))
 
 
-(def counter (atom -1))
-
-(defn next-value []
-  "increments the counter"
-(swap! counter inc))
-
 
 ;; regex
 
 (defn splitKeys [string]
   (split string #"\:" ))
+
+;; iterate over each form entry send via post message
+;; get primary key (get (  splitKeys (str (get x 0)))  0)
+;; get config item with this key
+;; iterate over each item field and change to new value
+;; save the changes
 
 (defn updateConfigProperty [entry newEntries]
   "iterate over a vector of maps and return the one who contains the propertyType (String) as lazy-sequenz"
@@ -44,17 +44,6 @@
        (merge {} (hash-map (keyword (get itemKey 1)) (val newEntry)))
 
        )) ) ))
-
-
-;;  (if( = (keyword (get itemKey 0)) (get entry :type))
- ;;      (assoc entry (keyword (get itemKey 1)) (val newEntry) )
-;;
-
-;;let[itemKey (  splitKeys (str (get x 0)))]
-  ;;     (replaceConfigProperty (keyword(get itemKey 1))  (assoc (getConfigProperty (get itemKey  0) configEntry) (keyword (get itemKey 1)) (val x)) configEntry) ;;(get itemKey 1)
-
-;;(replaceConfigProperty "bob" [{:type "bob"}{:name "fritz"}] {:type "karl"})
-
 
 
 ;; read/write config file
@@ -102,13 +91,6 @@
   (writeJsonConfigFile adress (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)) ))
 
 
-;; iterate over each form entry send via post message
-;; get primary key (get (  splitKeys (str (get x 0)))  0)
-;; get config item with this key
-;; iterate over each item field and change to new value
-;; save the changes
-
-;;(doseq [[k v] args] (str k v))
 (defn get_config [newEntries]
   ""
     (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)))

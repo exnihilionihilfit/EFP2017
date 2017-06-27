@@ -99,6 +99,7 @@
                   <div id="configInputContainer">
 
                     {% for field in rule %}
+
                     {{ field.0}}
                        <input class="form-control input-sm" id="{{field.0}}"
                               name="{{rule.type}}{{field.0}}"
@@ -120,9 +121,6 @@
 
             {% endif %}
 
-
-
-
             {% if validate %}
             <b><i class="fa fa-clipboard"></i> Validation result:</b>
 
@@ -130,15 +128,10 @@
               <div class="progress">
                 <div class="progress-bar progress-bar-success" style="width:  {{validationPercentage}}%"></div>
               </div>
-
-
               <ul>
-
 
                 {% for item in items %}
                 <li style="text-transform:uppercase">
-
-
                   {{item|val}}
                 </li>
 
