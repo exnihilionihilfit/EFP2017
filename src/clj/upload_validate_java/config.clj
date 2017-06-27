@@ -91,8 +91,8 @@
   (writeJsonConfigFile adress (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)) ))
 
 
-(defn get_config [newEntries]
+(defn get_config []
   ""
-    (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)))
+    (get (config) :items))
 
 

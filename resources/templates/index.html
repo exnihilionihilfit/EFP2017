@@ -55,8 +55,8 @@
 
               {% endif %}
 
-              {% if date %}
-              We have {{date}}
+              {% if about %}
+              This is a clojure application. Created to evalutate java files primarily.
               {% endif %}
 
               {% if upload %}
@@ -73,11 +73,31 @@
 
               <button class="btn btn-primary pull-left" style="margin-left: 10px" type="submit" ><i class="fa fa-upload" aria-hidden="true"></i> Upload...</button>
             </form>
+
+
+            <div  >
+              <br>
+              <br>
+              <br>
+              <br>
+              Evaluation content:
+              <p>
+                    <br>
+                  {% for item in config %}
+                    <li style="text-transform:uppercase">
+                      {{item.type|deleteColon }}
+                    </li>
+                 {% endfor %}
+              </p>
+
+            </div>
+
+
             {% endif %}
 
             {% if edit_config %}
-             <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
-               {% csrf-field %}
+            <form class="upload" action="/save_config" enctype="multipart/form-data" method="POST">
+              {% csrf-field %}
 
               <div class="row">
 
@@ -96,15 +116,11 @@
 
                     {% for field in rule %}
 
-                    {{ field.0}}
-                       <input class="form-control input-sm" id="{{field.0}}"
-                              name="{{rule.type}}{{field.0}}"
-                                type="text"
-                              value="{{field.1}}"
-
-
-                              />
-
+                    {{ field.0|deleteColon}}
+                    <input class="form-control input-sm" id="{{field.0}}"
+                           name="{{rule.type}}{{field.0}}"
+                           type="text"
+                           value="{{field.1}}"/>
 
                     {% endfor %}
                   </div>
@@ -132,11 +148,11 @@
 
                 {% for item in items %}
                 <li style="text-transform:uppercase">
-                  {{item|key}}
-                     {% if item|val|true? %}
+                  {{item|key|deleteColon }}
+                  {% if item|val|true? %}
                   <font size="3" color="green">  &#10004;</font>
-                    {%else%}
-                      <font size="3" color="red">  &#10006;</font>
+                  {%else%}
+                  <font size="3" color="red">  &#10006;</font>
                   {% endif %}
                 </li>
 
@@ -153,4 +169,4 @@
         {% script "/assets/jquery/jquery.min.js" %}
         {% script "/assets/bootstrap/js/bootstrap.min.js" %}
       </body>
-</html>
+      </html>

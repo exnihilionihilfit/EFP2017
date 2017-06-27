@@ -12,33 +12,31 @@
             ))
 
 
+
 (defroutes home-routes
   (selmer.filters/add-filter! :true? true?)
-   (selmer.filters/add-filter! :empty? empty?)
-   (selmer.filters/add-filter! :key key)
-   (selmer.filters/add-filter! :val val)
+  (selmer.filters/add-filter! :empty? empty?)
+  (selmer.filters/add-filter! :key key)
+  (selmer.filters/add-filter! :val val)
+  (selmer.filters/add-filter! :deleteColon #(clojure.string/replace % #":" ""))
+
   (GET "/" []
        (layout/render "index.html" {:default "true"}))
 
   (GET "/date" []
-       (layout/render "index.html" {:date (t/today)}))
+       (layout/render "index.html" {:about "true"}))
 
   (GET "/upload" []
-       (layout/render "index.html" {:upload "true"}))
+       (layout/render "index.html" {:upload "true" :config (get_config) }))
 
   (GET "/edit_config" []
-       (selmer.filters/add-filter! :key key)
-       (selmer.filters/add-filter! :val val)
-
        (layout/render "index.html" {:edit_config "true" :config (config)} true))
 
 
   (POST "/save_config" [& args]
-        (layout/render "index.html" {:config (get_config args) :edit_config "true"  :do_save (save_config args) }))
-
+        (layout/render "index.html" { :edit_config "true"  :do_save (save_config args) }))
 
   (POST "/upload" [file]
-
         (layout/render "index.html" {:items (filterValidateAll(validateAll file resource-path)) :validationPercentage (validationPercentage (validateAll file resource-path)) :validate "true"}));;layout/render "validation.html"
 
   (GET "/files/:filename" [filename]
@@ -47,5 +45,5 @@
 
 (def app ( wrap-webjars (app-handler
 
-                          ;; add your application routes here
+                          ;; added application routes
                           [home-routes])))
