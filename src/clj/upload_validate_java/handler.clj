@@ -14,6 +14,8 @@
 
 (defroutes home-routes
   (GET "/" []
+            (selmer.filters/add-filter! :true? true?)
+       (selmer.filters/add-filter! :empty? empty?)
        (layout/render "index.html" {:default "true"}))
 
   (GET "/date" []
@@ -25,6 +27,7 @@
   (GET "/edit_config" []
        (selmer.filters/add-filter! :key key)
        (selmer.filters/add-filter! :val val)
+
        (layout/render "index.html" {:edit_config "true" :config (config)} true))
 
 
@@ -33,6 +36,8 @@
 
 
   (POST "/upload" [file]
+       (selmer.filters/add-filter! :true? true?)
+       (selmer.filters/add-filter! :empty? empty?)
         (layout/render "index.html" {:items (filterValidateAll(validateAll file resource-path)) :validationPercentage (validationPercentage (validateAll file resource-path)) :validate "true"}));;layout/render "validation.html"
 
   (GET "/files/:filename" [filename]

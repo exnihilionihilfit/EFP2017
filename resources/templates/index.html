@@ -52,11 +52,7 @@
 
               {% if default %}
               This is a basic validator for java files. <br>
-              Only for: <br>
-              <li>Name: FileServer</li>
-              <li>Type: .java</li>
-              <li>Package: var.mom.jms.file </li>
-              <li> With entry point: public static void main(String[] args)</li>
+
               {% endif %}
 
               {% if date %}
@@ -105,7 +101,11 @@
                               name="{{rule.type}}{{field.0}}"
                                 type="text"
                               value="{{field.1}}"
+
+
                               />
+
+
                     {% endfor %}
                   </div>
                   <br><br>
@@ -132,7 +132,10 @@
 
                 {% for item in items %}
                 <li style="text-transform:uppercase">
-                  {{item|val}}
+                  {{item|key}}
+                     {% if item|val|true? %}
+                       &#9989;
+                    {%else%}&#10006;{% endif %}
                 </li>
 
 
