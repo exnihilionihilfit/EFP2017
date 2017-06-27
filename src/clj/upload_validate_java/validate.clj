@@ -101,8 +101,9 @@
 
              (if(and (validateFileName file)(validateFileType file) )
 
-                  (if (validateFileExists  file resource-path)
-                    (merge (hash-map (keyword "file upload successfull") true)
+                  (merge (io/upload-file resource-path file)
+                    (if (validateFileExists  file resource-path)
+                    ( merge (hash-map (keyword "file upload successfull") true)
                             (if (validatePackage file resource-path)
                               (hash-map (keyword  (get (getConfigProperty "package" (get (config) :items)) :success)) true , :numberOfValid (next-value))
                               (hash-map (keyword  (get (getConfigProperty "package" (get (config) :items)) :fail)) false ))
@@ -113,7 +114,7 @@
                                 (hash-map (keyword  (get (getConfigProperty "entryPoint" (get (config) :items)) :success)) true , :numberOfValid (next-value))
                                 (hash-map (keyword  (get (getConfigProperty "entryPoint" (get (config) :items)) :fail)) false))
                     )
-                    (hash-map (keyword "file upload failed") false))
+                    (hash-map (keyword "file upload failed") false)))
 
                  )
              )

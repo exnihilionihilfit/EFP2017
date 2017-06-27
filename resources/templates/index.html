@@ -134,8 +134,10 @@
                 <li style="text-transform:uppercase">
                   {{item|key}}
                      {% if item|val|true? %}
-                       &#9989;
-                    {%else%}&#10006;{% endif %}
+                  <font size="3" color="green">  &#10004;</font>
+                    {%else%}
+                      <font size="3" color="red">  &#10006;</font>
+                  {% endif %}
                 </li>
 
 
