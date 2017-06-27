@@ -20,13 +20,13 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                   <span class="sr-only">Toggle navigation</span>
                 </button>
-                <a class="navbar-brand" href="#">Java Validator</a>
+                <a class="navbar-brand" href="/">Java Validator</a>
               </div>
 
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                   <li>
-                    <a href="/upload">File Upload</a>
+                    <a href="/upload"><i class="fa fa-upload"></i> File Upload</a>
                   </li>
 
                   <li>
@@ -60,36 +60,39 @@
               {% endif %}
 
               {% if upload %}
-            <form class="upload" action="/upload" enctype="multipart/form-data" method="POST">
-              {% csrf-field %}
-              <div class="pull-left">
-                <input style="width:300px" class="form-control" id="fileName" type="text" placeholder="Java File Name..." value="" disabled="">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <form class="upload" action="/upload" enctype="multipart/form-data" method="POST">
+                  {% csrf-field %}
+                  <div class="pull-left">
+                    <input style="width:300px" class="form-control" id="fileName" type="text" placeholder="Java File Name..." value="" disabled="">
+                  </div>
+
+                  <label class="btn btn-default btn-file pull-left">
+                    <i class="fa fa-folder-open-o"></i> Choose File...
+                    <input style="display:none" id="file" name="file" type="file" onchange="$('#fileName').val($(this).val())">
+                  </label>
+
+                  <button class="btn btn-primary pull-left" style="margin-left: 10px" type="submit" ><i class="fa fa-upload" aria-hidden="true"></i> Upload...</button>
+                </form>
               </div>
+            </div>
 
-              <label class="btn btn-default btn-file pull-left">
-                <i class="fa fa-folder-open-o"></i> Choose File...
-                <input style="display:none" id="file" name="file" type="file" onchange="$('#fileName').val($(this).val())">
-              </label>
+            <br>
 
-              <button class="btn btn-primary pull-left" style="margin-left: 10px" type="submit" ><i class="fa fa-upload" aria-hidden="true"></i> Upload...</button>
-            </form>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                Following checkpoints get tested while running the evaluation of your file:
 
-
-            <div  >
-              <br>
-              <br>
-              <br>
-              <br>
-              Evaluation content:
-              <p>
-
-              </p>
-              <br>
+                <div class="col-lg-6 col-md-6 col-xs-6">
+                  <br>
                   {% for item in config %}
-                    <li style="text-transform:uppercase">
-                      {{item.type|deleteColon }}
-                    </li>
-                 {% endfor %}
+                  <li style="text-transform:uppercase">
+                    {{item.type|deleteColon }}
+                  </li>
+                  {% endfor %}
+                </div>
+              </div>
             </div>
 
 
@@ -103,7 +106,7 @@
 
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <h2>Configuration</h2>
-                  <p>Nullam quis risus eget <a href="#">urna mollis ornare</a> vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
+                  <p>Here you can specify the configuration for the validation of your file. <br><br> All fields must not be empty!</p>
                 </div>
 
                 {% for rule in config.items %}
