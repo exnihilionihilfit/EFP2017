@@ -22,7 +22,7 @@
 
 (defn next-value []
   "increments the counter"
-  (swap! counter inc))
+(swap! counter inc))
 
 ;; uploaded file to validate dir
 (def resource-path "/tmp/")
@@ -69,13 +69,13 @@
 (defn validatePackageName [file resource-path]
   "The package name / namespace get checked this should be the first statement"
 
-  (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get (getConfigProperty "packageName" (get (config) :items)) :name) )
+       (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get (getConfigProperty "packageName" (get (config) :items)) :name) )
   )
 
 (defn validatePackage [file resource-path]
   "The package name / namespace get checked this should be the first statement"
-  (= (str (first(split (first (textAsLines file resource-path )) #" ")))(get (getConfigProperty "package" (get (config) :items)) :name))
-  )
+ (= (str (first(split (first (textAsLines file resource-path )) #" ")))(get (getConfigProperty "package" (get (config) :items)) :name))
+)
 
 ;;entry point check
 (defn validateContainsMainFunction [file resource-path]
@@ -90,38 +90,38 @@
 (defn validateAll [file resource-path]
   "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run
   It returns a string with all messages of success and failure"
-  (merge {:totalValidations (-  (count (get (config) :items)) (reset! counter 0) 1)}
-         (if(validateFileName file)
-           (hash-map (keyword  (get (getConfigProperty "file-name" (get (config) :items)) :success)) true, :numberOfValid (next-value))
-           (hash-map (keyword  (get (getConfigProperty "file-name" (get (config) :items)) :fail)) false))
+    (merge {:totalValidations (-  (count (get (config) :items)) (reset! counter 0) 1)}
+           (if(validateFileName file)
+               (hash-map (keyword  (get (getConfigProperty "file-name" (get (config) :items)) :success)) true, :numberOfValid (next-value))
+               (hash-map (keyword  (get (getConfigProperty "file-name" (get (config) :items)) :fail)) false))
 
-         (if(validateFileType file)
-           (hash-map (keyword  (get (getConfigProperty "file-type" (get (config) :items)) :success)) true, :numberOfValid (next-value))
-           (hash-map (keyword  (get (getConfigProperty "file-type" (get (config) :items)) :fail)) false))
+             (if(validateFileType file)
+               (hash-map (keyword  (get (getConfigProperty "file-type" (get (config) :items)) :success)) true, :numberOfValid (next-value))
+               (hash-map (keyword  (get (getConfigProperty "file-type" (get (config) :items)) :fail)) false))
 
-         (if(and (validateFileName file)(validateFileType file) )
+             (if(and (validateFileName file)(validateFileType file) )
 
-           (merge (io/upload-file resource-path file)
-                  (if (validateFileExists  file resource-path)
+                  (merge (io/upload-file resource-path file)
+                    (if (validateFileExists  file resource-path)
                     ( merge (hash-map (keyword "file upload successfull") true)
-                      (if (validatePackage file resource-path)
-                        (hash-map (keyword  (get (getConfigProperty "package" (get (config) :items)) :success)) true , :numberOfValid (next-value))
-                        (hash-map (keyword  (get (getConfigProperty "package" (get (config) :items)) :fail)) false ))
-                      (if (validatePackageName file resource-path)
-                        (hash-map (keyword  (get (getConfigProperty "packageName" (get (config) :items)) :success)) true , :numberOfValid (next-value))
-                        (hash-map (keyword  (get (getConfigProperty "packageName" (get (config) :items)) :fail)) false ))
-                      (if (validateContainsMainFunction file resource-path)
-                        (hash-map (keyword  (get (getConfigProperty "entryPoint" (get (config) :items)) :success)) true , :numberOfValid (next-value))
-                        (hash-map (keyword  (get (getConfigProperty "entryPoint" (get (config) :items)) :fail)) false))
-                      )
+                            (if (validatePackage file resource-path)
+                              (hash-map (keyword  (get (getConfigProperty "package" (get (config) :items)) :success)) true , :numberOfValid (next-value))
+                              (hash-map (keyword  (get (getConfigProperty "package" (get (config) :items)) :fail)) false ))
+                            (if (validatePackageName file resource-path)
+                              (hash-map (keyword  (get (getConfigProperty "packageName" (get (config) :items)) :success)) true , :numberOfValid (next-value))
+                              (hash-map (keyword  (get (getConfigProperty "packageName" (get (config) :items)) :fail)) false ))
+                            (if (validateContainsMainFunction file resource-path)
+                                (hash-map (keyword  (get (getConfigProperty "entryPoint" (get (config) :items)) :success)) true , :numberOfValid (next-value))
+                                (hash-map (keyword  (get (getConfigProperty "entryPoint" (get (config) :items)) :fail)) false))
+                    )
                     (hash-map (keyword "file upload failed") false)))
 
-           )
-         )
-  )
+                 )
+             )
+)
 
 (defn validationPercentage[validation]
-  (* ( /  (get  validation :numberOfValid) (get  validation :totalValidations)) 100))
+ (* ( /  (get  validation :numberOfValid) (get  validation :totalValidations)) 100))
 
 (defn filterValidateAll[validation]
   "To filter out the validation counters and total count for display onto html page"

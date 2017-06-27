@@ -34,7 +34,7 @@
 
 
   (POST "/save_config" [& args]
-        (layout/render "index.html" {:config (get_config) :edit_config "true"  :do_save (save_config args) }))
+        (layout/render "index.html" {:config (get_config args) :edit_config "true"  :do_save (save_config args) }))
 
   (POST "/upload" [file]
         (layout/render "index.html" {:items (filterValidateAll(validateAll file resource-path)) :validationPercentage (validationPercentage (validateAll file resource-path)) :validate "true"}));;layout/render "validation.html"
