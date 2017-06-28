@@ -87,8 +87,10 @@
                 <div class="col-lg-8 col-md-8 col-xs-8">
                   <br>
                   {% for item in config|sort-by:name %}
-                  <li style="text-transform:uppercase">
-                    {{item.type|deleteColon }}: <b>{{item.name}}</b>
+                  <li >
+                   <span style="text-transform:uppercase">
+                     {{item.type|deleteColon }}:
+                    </span>  <b>{{item.name}}</b>
                   </li>
                   {% endfor %}
                 </div>

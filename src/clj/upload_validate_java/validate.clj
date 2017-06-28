@@ -129,5 +129,6 @@
 (defn filterValidateAll[validation]
   "To filter out the validation counters and total count for display onto html page"
   (if(and (contains? validation :numberOfValid) (contains? validation :totalValidations) )
-    (dissoc validation :numberOfValid :totalValidations))
-  (hash-map (keyword "please choose a file") false))
+    (dissoc validation :numberOfValid :totalValidations)
+      (hash-map (keyword "please choose a file") false))
+)
