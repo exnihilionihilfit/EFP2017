@@ -90,7 +90,7 @@
 (defn validateAll [file resource-path]
   "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run
   It returns a string with all messages of success and failure"
-    (merge {:totalValidations (-  (count (get (config) :items)) (reset! counter 0) 1)}
+    ( merge {:totalValidations (-  (count (get (config) :items)) (reset! counter 0) 1)}
            (if(validateFileName file)
                (hash-map (keyword  (get (getConfigProperty "file-name" (get (config) :items)) :success)) true, :numberOfValid (next-value))
                (hash-map (keyword  (get (getConfigProperty "file-name" (get (config) :items)) :fail)) false))
@@ -117,12 +117,17 @@
                     (hash-map (keyword "file upload failed") false)))
 
                  )
-             )
+
+      )
 )
 
 (defn validationPercentage[validation]
- (* ( /  (get  validation :numberOfValid) (get  validation :totalValidations)) 100))
+ (if(and (contains? validation :numberOfValid) (contains? validation :totalValidations) )
+   (* ( /  (get  validation :numberOfValid) (get  validation :totalValidations)) 100)
+   (str "0")))
 
 (defn filterValidateAll[validation]
   "To filter out the validation counters and total count for display onto html page"
-  (dissoc validation :numberOfValid :totalValidations))
+  (if(and (contains? validation :numberOfValid) (contains? validation :totalValidations) )
+    (dissoc validation :numberOfValid :totalValidations))
+  (hash-map (keyword "please choose a file") false))
