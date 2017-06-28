@@ -8,4 +8,6 @@ $(document).ready(function(){
     if(window.location.pathname == path) $("#" + path.replace("/", "")).addClass("active");
   });
 
+  if(window.location.pathname == "/save_config") $("#edit_config").addClass("active");
+
 });
