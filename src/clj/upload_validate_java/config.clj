@@ -77,7 +77,7 @@
 
 
 (defn extractPOSTMessage [newEntries]
-  "x is the type field of the json object entry. Get the key from x remove the colon and search for the entry in
+  "newEntries is the type field of the json object entry. Get the key from newEntries remove the colon and search for the entry in
   the config file. Then replace the entry with the new value."
   (let [configEntries (get (config) :items)](
        hash-map :items
@@ -87,11 +87,12 @@
   )
 
 (defn save_config [newEntries]
-  "merge the loaded and via web interface new added values (remove also with post send :__anti-forgery-token)"
+  "Update the loaded and via web interface new added values (remove also with post send :__anti-forgery-token) to the config json file"
   (writeJsonConfigFile adress (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)) ))
 
 
 (defn get_config
+  "If new enties (config file entries) ar given the new ones will replace the old else the config json file will be loaded and returned as map"
   ([newEntries]
   "Replace the old config entries with new ones"
     (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)))

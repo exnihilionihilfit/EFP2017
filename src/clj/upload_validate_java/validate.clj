@@ -17,7 +17,7 @@
 (def text '())
 (def validationMessage '())
 
-;; counter
+;; counter used in validateAll
 (def counter (atom -1))
 
 (defn next-value []
@@ -88,8 +88,10 @@
   (.exists (clojure.java.io/as-file (str resource-path (:filename file)))))
 
 (defn validateAll [file resource-path]
-  "This is the main validator part. Firstly the name and type of the file will be checkt, then the file uploaded and then all test could run
-  It returns a string with all messages of success and failure"
+  "This is the main validator part. Firstly the name and type of the file will be checkt, then the file will be uploaded. Tthen all tests
+  to validate the file could be run.
+  A map will be returned with the success and fald messages as keys and true and false as values. The messages as keys will be showen directly and
+  the boolean values will be displayed as symbols"
     ( merge {:totalValidations (-  (count (get (config) :items)) (reset! counter 0) 1)}
            (if(validateFileName file)
                (hash-map (keyword  (get (getConfigProperty "file-name" (get (config) :items)) :success)) true, :numberOfValid (next-value))
@@ -122,6 +124,7 @@
 )
 
 (defn validationPercentage[validation]
+  "Each validation step wich is as a result is true will increment a counter which will here connected with the total number of validations transformed into an precentage value"
  (if(and (contains? validation :numberOfValid) (contains? validation :totalValidations) )
    (* ( /  (get  validation :numberOfValid) (get  validation :totalValidations)) 100)
    (str "0")))
