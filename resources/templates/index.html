@@ -84,11 +84,11 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 Following checkpoints get tested while running the evaluation of your file:
 
-                <div class="col-lg-6 col-md-6 col-xs-6">
+                <div class="col-lg-8 col-md-8 col-xs-8">
                   <br>
-                  {% for item in config %}
+                  {% for item in config|sort-by:name %}
                   <li style="text-transform:uppercase">
-                    {{item.type|deleteColon }}
+                    {{item.type|deleteColon }}: <b>{{item.name}}</b>
                   </li>
                   {% endfor %}
                 </div>
@@ -118,13 +118,13 @@
                   </h4>
                   <div id="configInputContainer">
 
-                    {% for field in rule |sort-by:name %}
+                    {% for field in rule|sort %}
 
                     {{ field.0|deleteColon}}
                     <input class="form-control input-sm" id="{{field.0}}"
                            name="{{rule.type}}{{field.0}}"
                            type="text"
-                           value="{{field.1}}"/>
+                           value="{{field.1}}" required="required"/>
 
                     {% endfor %}
                   </div>
