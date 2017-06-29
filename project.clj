@@ -3,7 +3,9 @@
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
 
-  :dependencies [[clj-time "0.13.0"]
+  :dependencies [
+
+                 [clj-time "0.13.0"]
                  [compojure "1.6.0"]
                  [cprop "0.1.10"]
                  [funcool/struct "1.0.0"]
@@ -23,6 +25,7 @@
                  [org.webjars/font-awesome "4.7.0"]
                  [org.webjars/jquery "3.1.1"]
                  [org.webjars/webjars-locator-jboss-vfs "0.1.0"]
+                 [org.webjars/html2canvas "0.4.1"]
                  [ring-webjars "0.1.1"]
                  [ring/ring-core "1.6.0"]
                  [ring/ring-defaults "0.3.0"]
@@ -31,6 +34,7 @@
                  [environ "1.1.0"]
                  [noir-exception "0.2.2"]
                  [lib-noir "0.9.9"]
+
                  ]
 
   :min-lein-version "2.0.0"

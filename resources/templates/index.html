@@ -33,10 +33,6 @@
                     <a href="/edit_config"><i class="fa fa-cog"></i> Edit Config</a>
                   </li>
 
-                  <li id="#">
-                    <a href="#"><i class="fa fa-download"></i> Download Result</a>
-                  </li>
-
                   <li id="about">
                     <a href="/about"><i class="fa fa-info-circle"></i> About</a>
                   </li>
@@ -88,8 +84,8 @@
                   <br>
                   {% for item in config|sort-by:name %}
                   <li >
-                   <span style="text-transform:uppercase">
-                     {{item.type|deleteColon }}:
+                    <span style="text-transform:uppercase">
+                      {{item.type|deleteColon }}:
                     </span>  <b>{{item.name}}</b>
                   </li>
                   {% endfor %}
@@ -147,25 +143,31 @@
             <b><i class="fa fa-clipboard"></i> Validation result:</b>
 
             <div class="col-lg-6 col-md-6 col-xs-6">
-              Your File is {{validationPercentage}}% valid.
-              <div class="progress">
-                <div class="progress-bar progress-bar-success" style="width:  {{validationPercentage}}%"></div>
+              <div id="validationResult">
+                Your File is {{validationPercentage}}% valid.
+                <div class="progress">
+                  <div class="progress-bar progress-bar-success" style="width:  {{validationPercentage}}%"></div>
+                </div>
+
+                <ul>
+                  {% for item in items %}
+                  <li style="text-transform:uppercase">
+                    {{item|key|deleteColon }}
+                    {% if item|val|true? %}
+                    <font size="3" color="green">  &#10004;</font>
+                    {%else%}
+                    <font size="3" color="red">  &#10006;</font>
+                    {% endif %}
+                  </li>
+
+
+                  {% endfor %}
+                </ul>
               </div>
-              <ul>
 
-                {% for item in items %}
-                <li style="text-transform:uppercase">
-                  {{item|key|deleteColon }}
-                  {% if item|val|true? %}
-                  <font size="3" color="green">  &#10004;</font>
-                  {%else%}
-                  <font size="3" color="red">  &#10006;</font>
-                  {% endif %}
-                </li>
+              <br><br>
 
-
-                {% endfor %}
-              </ul>
+              <button id="exportValidationResult" class="btn btn-primary" ><i class="fa fa-download" aria-hidden="true"></i> Export as PDF...</button>
             </div>
             {% endif %}
 
@@ -174,7 +176,11 @@
 
         {% script "/assets/tether/dist/js/tether.min.js" %}
         {% script "/assets/jquery/jquery.min.js" %}
+        {% script "/assets/html2canvas/html2canvas.js" %}
         {% script "/assets/bootstrap/js/bootstrap.min.js" %}
         {% script "/js/script.js" %}
+
+        <!-- cannot be included via luminus because there is no webjar of this library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
       </body>
       </html>
