@@ -10,7 +10,7 @@
             [ring.util.anti-forgery :refer [anti-forgery-field]]))
 
 
-           (filters/add-filter! :key key)
+(filters/add-filter! :key key)
 (filters/add-filter! :val val)
 (parser/add-tag! :csrf-field (fn [_ _] (anti-forgery-field)))
 

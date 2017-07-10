@@ -1,6 +1,6 @@
 (ns upload_validate_java.config
   ( :require
-            [noir.io :as io]
+    [noir.io :as io]
     [noir.response :as response]
     [noir.util.middleware :refer [app-handler]]
     [ring.util.response :refer [file-response]]
@@ -23,9 +23,7 @@
   (into {} (extractConfigProperty propertyType configMap)))
 
 
-
-;; regex
-
+;; java split method
 (defn splitKeys [string]
   (split string #"\:" ))
 
@@ -46,8 +44,7 @@
        )) ) ))
 
 
-;; read/write config file
-
+;;location to read/write config file
 (def adress "config/config.json")
 
 (defn json_write [string]
@@ -98,8 +95,5 @@
     (extractPOSTMessage(dissoc newEntries :__anti-forgery-token)))
   ([]
    "Returns all config entries from json file"
-  (get (config) :items))
-  )
-
-
+  (get (config) :items)))
 

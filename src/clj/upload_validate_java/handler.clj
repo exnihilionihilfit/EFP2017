@@ -14,6 +14,7 @@
 
 
 (defroutes home-routes
+  ;; using selmers filter functionality to make clojure/java usable in frontend
   (selmer.filters/add-filter! :true? true?)
   (selmer.filters/add-filter! :empty? empty?)
   (selmer.filters/add-filter! :key key)
@@ -44,6 +45,5 @@
 
 
 (def app ( wrap-webjars (app-handler
-
                           ;; added application routes
                           [home-routes])))

@@ -19,7 +19,7 @@
 
 ;; counter used in validateAll
 (def counter (atom -1))
-
+;; using atoms to create a "variable" just for counting errors in validateAll to generate a percentage value
 (defn next-value []
   "increments the counter"
 (swap! counter inc))
@@ -61,14 +61,12 @@
   (= ( first (splitFileIntoNameAndType file))(get (getConfigProperty "file-name" (get (config) :items)) :name))) ;; (get (config) :items) --> get the vector of all property elements as vector
 
 
-
 (defn validateFileType [file]
   "first get config map with right type then get the name field of this map an compare it with the file type"
   (= ( second (splitFileIntoNameAndType file)) (get (getConfigProperty "file-type" (get (config) :items)) :name)))
 
 (defn validatePackageName [file resource-path]
   "The package name / namespace get checked this should be the first statement"
-
        (= (str (second(split (first (textAsLines file resource-path )) #" "))) (get (getConfigProperty "packageName" (get (config) :items)) :name) )
   )
 
@@ -118,9 +116,8 @@
                     )
                     (hash-map (keyword "file upload failed") false)))
 
-                 )
-
-      )
+            )
+  )
 )
 
 (defn validationPercentage[validation]
